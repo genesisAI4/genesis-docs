@@ -62,9 +62,11 @@ const sidebars: SidebarsConfig = {
         'genesis-nexus/overview',
         'genesis-nexus/a2a-protocol',
         'genesis-nexus/neural-routing',
-        'genesis-nexus/agent-system',
-        'genesis-nexus/state-management',
-        'genesis-nexus/simulations',
+        'genesis-nexus/installation',
+        'genesis-nexus/configuration',
+        'genesis-nexus/agent-types',
+        'genesis-nexus/a2a-protocol-spec',
+        'genesis-nexus/routing-algorithms',
       ],
     },
     {
@@ -76,11 +78,10 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'clisis-agent/overview',
-        'clisis-agent/system-integration',
+        'clisis-agent/installation',
         'clisis-agent/guardian-layer',
-        'clisis-agent/sandboxed-execution',
-        'clisis-agent/hardware-access',
-        'clisis-agent/security',
+        'clisis-agent/system-modules',
+        'clisis-agent/cli-commands',
       ],
     },
     {
@@ -92,12 +93,11 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'genesis-temporal/overview',
-        'genesis-temporal/architecture',
-        'genesis-temporal/workflows',
-        'genesis-temporal/activities',
+        'genesis-temporal/installation',
         'genesis-temporal/chasm-layer',
+        'genesis-temporal/workflow-types',
+        'genesis-temporal/services',
         'genesis-temporal/deployment',
-        'genesis-temporal/monitoring',
       ],
     },
     {
@@ -109,11 +109,10 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'cloud-api/overview',
-        'cloud-api/zero-knowledge-sync',
+        'cloud-api/installation',
         'cloud-api/e2ee-implementation',
         'cloud-api/api-endpoints',
         'cloud-api/database-schema',
-        'cloud-api/authentication',
       ],
     },
     {
@@ -125,11 +124,9 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'desktop-apps/overview',
-        'desktop-apps/genesis-desktop',
-        'desktop-apps/genesis-companion',
+        'desktop-apps/installation',
         'desktop-apps/glassmorphism-ui',
         'desktop-apps/embedded-nexus',
-        'desktop-apps/ipc-communication',
       ],
     },
     {
@@ -141,11 +138,10 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'mobile-app/overview',
-        'mobile-app/architecture',
-        'mobile-app/validation-cockpit',
-        'mobile-app/nexus-connection',
+        'mobile-app/installation',
+        'mobile-app/navigation',
         'mobile-app/components',
-        'mobile-app/build-deployment',
+        'mobile-app/state-management',
       ],
     },
     {
@@ -157,10 +153,6 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'web-portal/overview',
-        'web-portal/nextjs-architecture',
-        'web-portal/landing-page',
-        'web-portal/cloud-app',
-        'web-portal/authentication',
       ],
     },
     {
@@ -172,10 +164,8 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'browser-extension/overview',
-        'browser-extension/chrome-mv3',
-        'browser-extension/context-injection',
-        'browser-extension/bridge-protocol',
-        'browser-extension/permissions',
+        'browser-extension/installation',
+        'browser-extension/architecture',
       ],
     },
     {
@@ -187,10 +177,8 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'marketplace/overview',
-        'marketplace/blueprint-trading',
-        'marketplace/encryption',
+        'marketplace/installation',
         'marketplace/smart-contracts',
-        'marketplace/agent-publishing',
       ],
     },
     {
@@ -202,11 +190,9 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'genesis-ops/overview',
-        'genesis-ops/infrastructure',
-        'genesis-ops/docker-compose',
+        'genesis-ops/installation',
         'genesis-ops/kubernetes',
         'genesis-ops/monitoring',
-        'genesis-ops/ci-cd',
       ],
     },
     {
