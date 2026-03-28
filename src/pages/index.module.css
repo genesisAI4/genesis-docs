@@ -1,6 +1,5 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Homepage styles - Genesis AI
  */
 
 .heroBanner {
@@ -8,16 +7,223 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, 
+    var(--genesis-bg-darker) 0%,
+    var(--genesis-bg-dark) 50%,
+    var(--genesis-blue-900) 100%
+  );
+  border-bottom: 1px solid var(--genesis-glass-border);
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 2rem 1rem;
   }
+}
+
+.hero__title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, 
+    var(--genesis-blue-400) 0%,
+    var(--genesis-purple-400) 50%,
+    var(--genesis-cyan-400) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@media screen and (max-width: 996px) {
+  .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+.hero__subtitle {
+  font-size: 1.5rem;
+  color: var(--genesis-text-secondary);
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero__description {
+  font-size: 1.125rem;
+  color: var(--genesis-text-muted);
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+@media screen and (max-width: 768px) {
+  .buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .buttons .button {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .margin-left--md {
+    margin-left: 0 !important;
+  }
+}
+
+/* Quick Links Section */
+.quickLinks {
+  padding: 4rem 0;
+  background: var(--genesis-bg-darker);
+  border-bottom: 1px solid var(--genesis-glass-border);
+}
+
+.quickLinks .card {
+  height: 100%;
+  transition: all 0.3s ease;
+  border: 1px solid var(--genesis-glass-border);
+  background: var(--genesis-glass-bg);
+  backdrop-filter: blur(var(--genesis-glass-blur));
+}
+
+.quickLinks .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: var(--genesis-blue-500);
+}
+
+.quickLinks .card__header h3 {
+  color: var(--genesis-blue-400);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.quickLinks .card__body {
+  flex: 1;
+}
+
+.quickLinks .card__body p {
+  color: var(--genesis-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.quickLinks .card__footer {
+  padding-top: 1rem;
+  border-top: 1px solid var(--genesis-glass-border);
+}
+
+/* Features Section */
+.features {
+  padding: 4rem 0;
+  background: var(--genesis-bg-darkest);
+}
+
+.featuresTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 3rem;
+  color: var(--genesis-text-primary);
+}
+
+@media screen and (max-width: 996px) {
+  .featuresTitle {
+    font-size: 2rem;
+  }
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.features .card {
+  border: 1px solid var(--genesis-glass-border);
+  background: var(--genesis-glass-bg);
+  backdrop-filter: blur(var(--genesis-glass-blur));
+  transition: all 0.3s ease;
+}
+
+.features .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: var(--genesis-blue-500);
+}
+
+.features .card h3 {
+  color: var(--genesis-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.features .card p {
+  color: var(--genesis-text-secondary);
+  line-height: 1.6;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glass card utility */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, 
+    var(--genesis-blue-400) 0%,
+    var(--genesis-purple-400) 50%,
+    var(--genesis-cyan-400) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

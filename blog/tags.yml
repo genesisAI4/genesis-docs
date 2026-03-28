@@ -1,0 +1,26 @@
+# Genesis AI Blog Tags
+
+genesis:
+  label: Genesis AI
+  permalink: /genesis
+  description: Actualités et mises à jour de Genesis AI
+
+release:
+  label: Release
+  permalink: /release
+  description: Notes de version et sorties
+
+tutorial:
+  label: Tutoriel
+  permalink: /tutorial
+  description: Guides et tutoriels
+
+update:
+  label: Mise à jour
+  permalink: /update
+  description: Mises à jour de la plateforme
+
+announcement:
+  label: Annonce
+  permalink: /announcement
+  description: Annonces officielles

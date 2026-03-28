@@ -61,9 +61,11 @@ const config: Config = {
   themeConfig: {
     image: 'img/genesis-social-card.jpg',
     metadata: [
-      {name: 'keywords', content: 'AI, orchestration, workflows, distributed, zero-knowledge, agents'},
+      {name: 'keywords', content: 'AI, orchestration, workflows, distributed, zero-knowledge, agents, multi-agent, LLM'},
       {name: 'author', content: 'Genesis AI Team'},
       {property: 'og:site_name', content: 'Genesis AI Documentation'},
+      {property: 'og:title', content: 'Genesis AI - Universal Personal AI Assistant'},
+      {property: 'og:description', content: 'Documentation complète de l\\'écosystème Genesis AI - Orchestration distribuée de workflows AI'},
     ],
     colorMode: {
       defaultMode: 'dark',
@@ -81,23 +83,18 @@ const config: Config = {
       logo: {
         alt: 'Genesis AI Logo',
         src: 'img/logo.svg',
-        href: '/genesis-docs/',
+        href: '/',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'main',
           position: 'left',
-          label: 'Documentation',
-        },
-        {
-          to: '/blog',
-          label: 'Blog',
-          position: 'left',
+          label: 'Docs',
         },
         {
           type: 'dropdown',
-          label: 'API Reference',
+          label: 'API',
           position: 'left',
           items: [
             {
@@ -113,19 +110,18 @@ const config: Config = {
               to: '/docs/api-reference/grpc',
             },
             {
+              label: 'WebSocket',
+              to: '/docs/api-reference/websocket',
+            },
+            {
               label: 'SDK',
               to: '/docs/api-reference/sdk',
             },
           ],
         },
         {
-          href: 'https://github.com/genesisAI4',
+          href: 'https://github.com/genesisAI4/genesis-docs',
           label: 'GitHub',
-          position: 'right',
-        },
-        {
-          href: 'https://discord.gg/genesisai',
-          label: 'Discord',
           position: 'right',
         },
       ],
@@ -145,17 +141,17 @@ const config: Config = {
               to: '/docs/introduction/architecture',
             },
             {
-              label: 'Security Model',
+              label: 'Security',
               to: '/docs/introduction/security-model',
             },
             {
-              label: 'API Reference',
-              to: '/docs/api-reference/overview',
+              label: 'Advanced',
+              to: '/docs/advanced/performance-optimization',
             },
           ],
         },
         {
-          title: 'Projects',
+          title: 'Core Projects',
           items: [
             {
               label: 'igon7 Engine',
@@ -170,7 +166,7 @@ const config: Config = {
               to: '/docs/clisis-agent/overview',
             },
             {
-              label: 'Genesis Temporal',
+              label: 'Temporal',
               to: '/docs/genesis-temporal/overview',
             },
           ],
@@ -187,50 +183,26 @@ const config: Config = {
               href: 'https://x.com/genesis_ai',
             },
             {
-              label: 'GitHub Discussions',
-              href: 'https://github.com/genesisAI4/genesis-docs/discussions',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub Organization',
-              href: 'https://github.com/genesisAI4',
-            },
-            {
-              label: 'Main Website',
-              href: 'https://genesisai.io',
+              label: 'GitHub',
+              href: 'https://github.com/genesisAI4/genesis-docs',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Genesis AI Project. Open Source (MIT). Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Genesis AI Project. MIT License. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'diff', 'json', 'typescript', 'go', 'rust'],
+      additionalLanguages: ['bash', 'diff', 'json', 'typescript', 'javascript', 'go', 'rust', 'python', 'yaml'],
     },
     announcementBar: {
-      id: 'support_us',
+      id: 'genesis_v1',
       content:
-        '🚀 Genesis AI Documentation v1.0 is now available! <a target="_blank" rel="noopener noreferrer" href="https://github.com/genesisAI4/genesis-docs">Star on GitHub</a> ⭐',
+        '🎉 Documentation v1.0 complète disponible ! <a target="_blank" rel="noopener noreferrer" href="https://github.com/genesisAI4/genesis-docs">⭐ Star sur GitHub</a>',
       backgroundColor: '#030712',
       textColor: '#ffffff',
       isCloseable: true,
-    },
-    algolia: {
-      // Configuration pour Algolia DocSearch (à configurer)
-      appId: 'YOUR_APP_ID',
-      apiKey: 'YOUR_SEARCH_KEY',
-      indexName: 'genesis-docs',
-      contextualSearch: true,
     },
   } satisfies Preset.ThemeConfig,
 };
