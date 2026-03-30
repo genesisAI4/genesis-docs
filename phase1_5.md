@@ -51,7 +51,7 @@ B. Règles de Code Obligatoires
 
 Single Source of Truth (SSOT) : Le fichier state.ts est le roi. Aucun autre module ne doit stocker l'historique des conversations. Quand state.ts est mis à jour, il doit déclencher un broadcast() via WebSockets à tous les clients connectés.
 
-Architecture Non-Bloquante : L'IA (OpenClaw) met du temps à réfléchir. L'appel à l'IA ne doit JAMAIS bloquer le serveur HTTP. Utilisez des Promises/Workers pour que le serveur Nexus puisse continuer de recevoir des messages WhatsApp pendant que l'IA réfléchit.
+Architecture Non-Bloquante : L'IA (GenesisCore) met du temps à réfléchir. L'appel à l'IA ne doit JAMAIS bloquer le serveur HTTP. Utilisez des Promises/Workers pour que le serveur Nexus puisse continuer de recevoir des messages WhatsApp pendant que l'IA réfléchit.
 
 Esthétique Front-End : Le fichier index.html doit utiliser Tailwind CSS via CDN.
 
@@ -61,7 +61,7 @@ Panneaux translucides (bg-white/5 backdrop-blur-md).
 
 Couleurs sémantiques : Bleu pour les messages, Vert pour l'autorisation, Orange/Rouge pour le Guardian (Alertes).
 
-Visualisation de la "Chain of Thought" : Le bridge OpenClaw doit émettre des événements THINKING_STEP. Le frontend doit les attraper et les afficher avec une légère opacité (opacity-50) sous forme de liste défilante pour montrer que l'IA travaille.
+Visualisation de la "Chain of Thought" : Le bridge GenesisCore doit émettre des événements THINKING_STEP. Le frontend doit les attraper et les afficher avec une légère opacité (opacity-50) sous forme de liste défilante pour montrer que l'IA travaille.
 
 C. Le Premier Fichier à Coder
 

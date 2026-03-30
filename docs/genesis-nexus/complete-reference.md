@@ -10,14 +10,14 @@ sidebar_position: 4
 
 ## 📊 Statistiques du Projet
 
-| Métrique | Valeur |
-|----------|--------|
-| **Fichiers TypeScript** | 150+ fichiers |
-| **Scripts de simulation** | 18 scripts |
-| **Protocoles implémentés** | A2A v1.0, WebSocket, gRPC |
-| **Agents supportés** | 7 types d'agents |
-| **Ports** | 8080 (HTTP/WS), 18789 (ClawX) |
-| **Lignes de code** | ~50,000+ lignes |
+| Métrique                   | Valeur                        |
+| -------------------------- | ----------------------------- |
+| **Fichiers TypeScript**    | 150+ fichiers                 |
+| **Scripts de simulation**  | 18 scripts                    |
+| **Protocoles implémentés** | A2A v1.0, WebSocket, gRPC     |
+| **Agents supportés**       | 7 types d'agents              |
+| **Ports**                  | 8080 (HTTP/WS), 18789 (ClawX) |
+| **Lignes de code**         | ~50,000+ lignes               |
 
 ---
 
@@ -131,7 +131,7 @@ genesis-nexus/
 │   │   ├── tracing.ts
 │   │   └── alerting.ts
 │   │
-│   ├── openclaw/                # Protocole OpenClaw
+│   ├── genesis-core/                # Protocole GenesisCore
 │   │   └── bridge.ts
 │   │
 │   ├── orchestration/           # Orchestration
@@ -239,22 +239,22 @@ interface A2AMessage {
   type: MessageType;             // Type de message
   version: string;               // Version du protocole (ex: "1.0.0")
   timestamp: number;             // Unix timestamp en millisecondes
-  
+
   // Routing
   from: AgentIdentity;           // Identité de l'expéditeur
   to: AgentIdentity;             // Identité du destinataire
   correlationId?: string;        // Pour lier request/response
-  
+
   // Payload
   action?: string;               // Action à exécuter
   payload?: any;                 // Données du message
   result?: any;                  // Résultat (pour response)
   error?: A2AError;              // Erreur (pour error)
-  
+
   // Security
   signature: string;             // Signature HMAC-SHA256
   encryption?: EncryptionData;   // Données chiffrées (optionnel)
-  
+
   // Metadata
   priority: Priority;            // Priorité du message
   ttl: number;                   // Time to live en ms
@@ -316,20 +316,20 @@ interface A2AError {
 
 #### Codes d'Erreur
 
-| Code | Description | Retryable |
-|------|-------------|-----------|
-| `AUTH_FAILED` | Échec d'authentification | Non |
-| `UNAUTHORIZED` | Action non autorisée | Non |
-| `NOT_FOUND` | Agent/resource introuvable | Non |
-| `INVALID_MESSAGE` | Format de message invalide | Non |
-| `SIGNATURE_INVALID` | Signature invalide | Non |
-| `TIMEOUT` | Délai d'attente dépassé | Oui |
-| `UNAVAILABLE` | Agent indisponible | Oui |
-| `RATE_LIMITED` | Limite de débit atteinte | Oui |
-| `INTERNAL_ERROR` | Erreur interne | Oui |
-| `NETWORK_ERROR` | Erreur réseau | Oui |
-| `VALIDATION_ERROR` | Erreur de validation | Non |
-| `EXECUTION_FAILED` | Échec d'exécution | Oui |
+| Code                | Description                | Retryable |
+| ------------------- | -------------------------- | --------- |
+| `AUTH_FAILED`       | Échec d'authentification   | Non       |
+| `UNAUTHORIZED`      | Action non autorisée       | Non       |
+| `NOT_FOUND`         | Agent/resource introuvable | Non       |
+| `INVALID_MESSAGE`   | Format de message invalide | Non       |
+| `SIGNATURE_INVALID` | Signature invalide         | Non       |
+| `TIMEOUT`           | Délai d'attente dépassé    | Oui       |
+| `UNAVAILABLE`       | Agent indisponible         | Oui       |
+| `RATE_LIMITED`      | Limite de débit atteinte   | Oui       |
+| `INTERNAL_ERROR`    | Erreur interne             | Oui       |
+| `NETWORK_ERROR`     | Erreur réseau              | Oui       |
+| `VALIDATION_ERROR`  | Erreur de validation       | Non       |
+| `EXECUTION_FAILED`  | Échec d'exécution          | Oui       |
 
 ---
 
@@ -344,36 +344,36 @@ interface A2AError {
  */
 class A2AProtocol extends EventEmitter {
   // Constantes
-  private static readonly PROTOCOL_VERSION = '1.0.0';
-  private static readonly HEARTBEAT_INTERVAL = 30000;    // 30 secondes
-  private static readonly HEARTBEAT_TIMEOUT = 90000;     // 90 secondes
-  private static readonly MESSAGE_RATE_LIMIT = 100;      // 100 messages/seconde
-  private static readonly RATE_LIMIT_WINDOW = 1000;      // 1 seconde
-  
+  private static readonly PROTOCOL_VERSION = "1.0.0";
+  private static readonly HEARTBEAT_INTERVAL = 30000; // 30 secondes
+  private static readonly HEARTBEAT_TIMEOUT = 90000; // 90 secondes
+  private static readonly MESSAGE_RATE_LIMIT = 100; // 100 messages/seconde
+  private static readonly RATE_LIMIT_WINDOW = 1000; // 1 seconde
+
   // État interne
-  private agents: Map<string, RegisteredAgent>;          // Agents enregistrés
-  private pendingRequests: Map<string, PendingRequest>;  // Requêtes en attente
-  private rateLimits: Map<string, RateLimitEntry>;       // Limites de débit
-  private wss?: WebSocketServer;                         // Serveur WebSocket
-  private secretKey: string;                             // Clé secrète pour HMAC
-  
+  private agents: Map<string, RegisteredAgent>; // Agents enregistrés
+  private pendingRequests: Map<string, PendingRequest>; // Requêtes en attente
+  private rateLimits: Map<string, RateLimitEntry>; // Limites de débit
+  private wss?: WebSocketServer; // Serveur WebSocket
+  private secretKey: string; // Clé secrète pour HMAC
+
   /**
    * Démarre le serveur A2A
    * @param port - Port d'écoute
    */
   async start(port: number): Promise<void> {
     this.wss = new WebSocketServer({ port });
-    
-    this.wss.on('connection', (ws, request) => {
+
+    this.wss.on("connection", (ws, request) => {
       this.handleConnection(ws, request);
     });
-    
+
     // Heartbeat pour détecter les agents morts
     setInterval(() => this.checkStaleAgents(), this.HEARTBEAT_INTERVAL);
-    
+
     console.log(`A2A Protocol server started on port ${port}`);
   }
-  
+
   /**
    * Arrête le serveur
    */
@@ -383,7 +383,7 @@ class A2AProtocol extends EventEmitter {
       this.wss.close();
     }
   }
-  
+
   /**
    * Envoie un message à un agent spécifique
    * @param agentId - ID de l'agent destinataire
@@ -392,77 +392,77 @@ class A2AProtocol extends EventEmitter {
    */
   async sendToAgent(agentId: string, message: A2AMessage): Promise<A2AMessage> {
     const agent = this.agents.get(agentId);
-    
+
     if (!agent) {
       throw new Error(`Agent ${agentId} not found`);
     }
-    
+
     // Vérifier la limite de débit
     this.checkRateLimit(agentId);
-    
+
     // Signer le message
     if (message.requiresSignature) {
       message.signature = this.signMessage(message);
     }
-    
+
     // Envoyer via WebSocket
     agent.socket.send(JSON.stringify(message));
-    
+
     // Attendre la réponse si nécessaire
     if (message.requiresAck || message.type === MessageType.QUERY) {
       return this.waitForResponse(message.id, agent.timeout);
     }
-    
+
     return undefined;
   }
-  
+
   /**
    * Broadcast un message à tous les agents
    * @param message - Message à broadcaster
    */
   async broadcast(message: A2AMessage): Promise<void> {
-    const promises = Array.from(this.agents.values()).map(agent =>
-      this.sendToAgent(agent.id, message).catch(err => {
+    const promises = Array.from(this.agents.values()).map((agent) =>
+      this.sendToAgent(agent.id, message).catch((err) => {
         console.error(`Failed to send to ${agent.id}:`, err);
-      })
+      }),
     );
-    
+
     await Promise.all(promises);
   }
-  
+
   /**
    * Retourne la liste des agents enregistrés
    */
   getRegisteredAgents(): RegisteredAgent[] {
     return Array.from(this.agents.values());
   }
-  
+
   /**
    * Retourne un agent par son ID
    */
   getAgent(agentId: string): RegisteredAgent | undefined {
     return this.agents.get(agentId);
   }
-  
+
   /**
    * Statistiques des agents
    */
   getAgentStats(): AgentStats {
     const total = this.agents.size;
     const active = Array.from(this.agents.values()).filter(
-      a => a.status === 'active'
+      (a) => a.status === "active",
     ).length;
     const stale = total - active;
-    
+
     return { total, active, stale };
   }
-  
+
   /**
    * Vérifie les agents obsolètes
    */
   checkStaleAgents(): void {
     const now = Date.now();
-    
+
     for (const [id, agent] of this.agents) {
       if (now - agent.lastHeartbeat > this.HEARTBEAT_TIMEOUT) {
         console.warn(`Agent ${id} is stale, removing...`);
@@ -470,57 +470,59 @@ class A2AProtocol extends EventEmitter {
       }
     }
   }
-  
+
   // Méthodes privées
-  
+
   private handleConnection(ws: WebSocket, request: IncomingMessage): void {
     // Authentification
     const token = this.extractToken(request);
     const agentId = this.validateToken(token);
-    
+
     if (!agentId) {
-      ws.close(4001, 'Unauthorized');
+      ws.close(4001, "Unauthorized");
       return;
     }
-    
+
     // Enregistrement de l'agent
-    ws.on('message', (data) => {
+    ws.on("message", (data) => {
       const message = JSON.parse(data.toString());
       this.handleMessage(agentId, message, ws);
     });
-    
-    ws.on('close', () => {
+
+    ws.on("close", () => {
       this.unregisterAgent(agentId);
     });
-    
-    ws.on('pong', () => {
+
+    ws.on("pong", () => {
       const agent = this.agents.get(agentId);
       if (agent) {
         agent.lastHeartbeat = Date.now();
       }
     });
   }
-  
+
   private handleMessage(
     agentId: string,
     message: A2AMessage,
-    ws: WebSocket
+    ws: WebSocket,
   ): void {
     // Vérifier la signature
     if (message.requiresSignature && !this.verifySignature(message)) {
-      ws.send(JSON.stringify({
-        type: MessageType.ERROR,
-        correlationId: message.id,
-        error: {
-          code: 'SIGNATURE_INVALID',
-          message: 'Invalid message signature',
-          retryable: false,
-          timestamp: Date.now(),
-        },
-      }));
+      ws.send(
+        JSON.stringify({
+          type: MessageType.ERROR,
+          correlationId: message.id,
+          error: {
+            code: "SIGNATURE_INVALID",
+            message: "Invalid message signature",
+            retryable: false,
+            timestamp: Date.now(),
+          },
+        }),
+      );
       return;
     }
-    
+
     // Traiter le message selon le type
     switch (message.type) {
       case MessageType.COMMAND:
@@ -540,7 +542,7 @@ class A2AProtocol extends EventEmitter {
         break;
     }
   }
-  
+
   private signMessage(message: A2AMessage): string {
     const payload = JSON.stringify({
       id: message.id,
@@ -551,48 +553,46 @@ class A2AProtocol extends EventEmitter {
       payload: message.payload,
       timestamp: message.timestamp,
     });
-    
-    return createHmac('sha256', this.secretKey)
-      .update(payload)
-      .digest('hex');
+
+    return createHmac("sha256", this.secretKey).update(payload).digest("hex");
   }
-  
+
   private verifySignature(message: A2AMessage): boolean {
     const expected = this.signMessage(message);
     return message.signature === expected;
   }
-  
+
   private checkRateLimit(agentId: string): void {
     const now = Date.now();
     let entry = this.rateLimits.get(agentId);
-    
+
     if (!entry) {
       entry = { count: 0, resetAt: now + this.RATE_LIMIT_WINDOW };
       this.rateLimits.set(agentId, entry);
     }
-    
+
     if (now > entry.resetAt) {
       entry.count = 0;
       entry.resetAt = now + this.RATE_LIMIT_WINDOW;
     }
-    
+
     entry.count++;
-    
+
     if (entry.count > this.MESSAGE_RATE_LIMIT) {
-      throw new Error('Rate limit exceeded');
+      throw new Error("Rate limit exceeded");
     }
   }
-  
+
   private async waitForResponse(
     messageId: string,
-    timeout: number
+    timeout: number,
   ): Promise<A2AMessage> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pendingRequests.delete(messageId);
-        reject(new Error('Response timeout'));
+        reject(new Error("Response timeout"));
       }, timeout);
-      
+
       this.pendingRequests.set(messageId, { resolve, reject, timer });
     });
   }
@@ -609,7 +609,7 @@ class A2AProtocol extends EventEmitter {
 class GenesisVault {
   private static masterKey: CryptoKey | null = null;
   private static secretStore: Map<string, string> = new Map();
-  
+
   /**
    * Déverrouille le vault avec un mot de passe
    * @param password - Mot de passe maître
@@ -617,29 +617,29 @@ class GenesisVault {
   static async unlock(password: string): Promise<void> {
     // Dériver la clé maître avec PBKDF2
     const encoder = new TextEncoder();
-    const salt = encoder.encode(process.env.VAULT_SALT || 'default-salt');
+    const salt = encoder.encode(process.env.VAULT_SALT || "default-salt");
     const keyMaterial = await crypto.subtle.importKey(
-      'raw',
+      "raw",
       encoder.encode(password),
-      'PBKDF2',
+      "PBKDF2",
       false,
-      ['deriveKey']
+      ["deriveKey"],
     );
-    
+
     this.masterKey = await crypto.subtle.deriveKey(
       {
-        name: 'PBKDF2',
+        name: "PBKDF2",
         salt,
         iterations: 100000,
-        hash: 'SHA-256',
+        hash: "SHA-256",
       },
       keyMaterial,
-      { name: 'AES-GCM', length: 256 },
+      { name: "AES-GCM", length: 256 },
       false,
-      ['encrypt', 'decrypt']
+      ["encrypt", "decrypt"],
     );
   }
-  
+
   /**
    * Chiffre un texte
    * @param text - Texte à chiffrer
@@ -647,26 +647,26 @@ class GenesisVault {
    */
   static async encrypt(text: string): Promise<string> {
     if (!this.masterKey) {
-      throw new Error('Vault is locked');
+      throw new Error("Vault is locked");
     }
-    
+
     const encoder = new TextEncoder();
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    
+
     const ciphertext = await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv },
+      { name: "AES-GCM", iv },
       this.masterKey,
-      encoder.encode(text)
+      encoder.encode(text),
     );
-    
+
     const result = {
-      iv: Buffer.from(iv).toString('base64'),
-      ciphertext: Buffer.from(ciphertext).toString('base64'),
+      iv: Buffer.from(iv).toString("base64"),
+      ciphertext: Buffer.from(ciphertext).toString("base64"),
     };
-    
+
     return JSON.stringify(result);
   }
-  
+
   /**
    * Déchiffre un texte
    * @param base64 - Données chiffrées en base64
@@ -674,20 +674,20 @@ class GenesisVault {
    */
   static async decrypt(base64: string): Promise<string> {
     if (!this.masterKey) {
-      throw new Error('Vault is locked');
+      throw new Error("Vault is locked");
     }
-    
+
     const { iv, ciphertext } = JSON.parse(atob(base64));
-    
+
     const plaintext = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv: new Uint8Array(Buffer.from(iv, 'base64')) },
+      { name: "AES-GCM", iv: new Uint8Array(Buffer.from(iv, "base64")) },
       this.masterKey,
-      new Uint8Array(Buffer.from(ciphertext, 'base64'))
+      new Uint8Array(Buffer.from(ciphertext, "base64")),
     );
-    
+
     return new TextDecoder().decode(plaintext);
   }
-  
+
   /**
    * Déchiffre et exécute un callback avec le secret
    * Le secret n'est jamais stocké en clair
@@ -696,10 +696,10 @@ class GenesisVault {
    */
   static async decryptAndScrub(
     base64: string,
-    callback: (secret: string) => void
+    callback: (secret: string) => void,
   ): Promise<void> {
     const secret = await this.decrypt(base64);
-    
+
     try {
       callback(secret);
     } finally {
@@ -707,48 +707,48 @@ class GenesisVault {
       this.scrubString(secret);
     }
   }
-  
+
   /**
    * Vérifie si un secret existe
    */
   static async hasSecret(key: string): Promise<boolean> {
     return this.secretStore.has(key);
   }
-  
+
   /**
    * Retourne un secret chiffré
    */
   static async getEncrypted(key: string): Promise<string> {
     const encrypted = this.secretStore.get(key);
-    
+
     if (!encrypted) {
       throw new Error(`Secret "${key}" not found`);
     }
-    
+
     return encrypted;
   }
-  
+
   /**
    * Stocke un secret chiffré
    */
   static async storeSecret(key: string, encryptedValue: string): Promise<void> {
     this.secretStore.set(key, encryptedValue);
   }
-  
+
   /**
    * Vérifie si le vault est déverrouillé
    */
   static isUnlocked(): boolean {
     return this.masterKey !== null;
   }
-  
+
   /**
    * Efface une chaîne de la mémoire (best effort)
    */
   private static scrubString(str: string): void {
     // Remplacer par des zéros (best effort, pas garanti en JS)
     for (let i = 0; i < str.length; i++) {
-      str = str.substring(0, i) + '\0' + str.substring(i + 1);
+      str = str.substring(0, i) + "\0" + str.substring(i + 1);
     }
   }
 }
@@ -764,23 +764,25 @@ class GenesisDB {
   private sql: postgres.Sql | null = null;
   private redis: Redis | null = null;
   private redisPubSub: Redis | null = null;
-  
+
   /**
    * Initialise les connexions
    */
   async init(): Promise<void> {
     // PostgreSQL
-    this.sql = postgres(process.env.DATABASE_URL || 'postgres://localhost/genesis');
-    
+    this.sql = postgres(
+      process.env.DATABASE_URL || "postgres://localhost/genesis",
+    );
+
     // Redis
-    this.redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+    this.redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
     this.redisPubSub = this.redis.duplicate();
-    
+
     // Tester les connexions
     await this.sql`SELECT 1`;
     await this.redis.ping();
   }
-  
+
   /**
    * Sauvegarde un message
    */
@@ -789,22 +791,28 @@ class GenesisDB {
       INSERT INTO messages (id, channel_id, content, sender, timestamp)
       VALUES (${msg.id}, ${msg.channelId}, ${msg.content}, ${msg.sender}, ${msg.timestamp})
     `;
-    
+
     // PubSub pour notification en temps réel
-    await this.redisPubSub.publish(`channel:${msg.channelId}`, JSON.stringify(msg));
+    await this.redisPubSub.publish(
+      `channel:${msg.channelId}`,
+      JSON.stringify(msg),
+    );
   }
-  
+
   /**
    * Récupère les messages d'un canal
    */
-  async getMessages(channelId: string, limit: number = 50): Promise<MessageData[]> {
+  async getMessages(
+    channelId: string,
+    limit: number = 50,
+  ): Promise<MessageData[]> {
     // Vérifier le cache Redis
     const cached = await this.redis.get(`messages:${channelId}`);
-    
+
     if (cached) {
       return JSON.parse(cached);
     }
-    
+
     // Requête DB
     const messages = await this.sql<MessageData[]>`
       SELECT * FROM messages
@@ -812,17 +820,17 @@ class GenesisDB {
       ORDER BY timestamp DESC
       LIMIT ${limit}
     `;
-    
+
     // Cache pour 5 minutes
     await this.redis.setex(
       `messages:${channelId}`,
       300,
-      JSON.stringify(messages)
+      JSON.stringify(messages),
     );
-    
+
     return messages;
   }
-  
+
   /**
    * Sauvegarde une action
    */
@@ -832,18 +840,22 @@ class GenesisDB {
       VALUES (${action.id}, ${action.type}, ${action.status}, ${action.payload}, ${action.createdAt})
     `;
   }
-  
+
   /**
    * Récupère les actions par status
    */
-  async getActions(status?: string, limit: number = 100): Promise<ActionData[]> {
+  async getActions(
+    status?: string,
+    limit: number = 100,
+  ): Promise<ActionData[]> {
     const query = status
-      ? this.sql`SELECT * FROM actions WHERE status = ${status} ORDER BY created_at DESC LIMIT ${limit}`
+      ? this
+          .sql`SELECT * FROM actions WHERE status = ${status} ORDER BY created_at DESC LIMIT ${limit}`
       : this.sql`SELECT * FROM actions ORDER BY created_at DESC LIMIT ${limit}`;
-    
+
     return query;
   }
-  
+
   /**
    * Met à jour le status d'une action
    */
@@ -853,7 +865,7 @@ class GenesisDB {
       WHERE id = ${actionId}
     `;
   }
-  
+
   /**
    * Sauvegarde un snapshot d'état
    */
@@ -863,7 +875,7 @@ class GenesisDB {
       VALUES (${snapshot.id}, ${JSON.stringify(snapshot.data)}, ${snapshot.createdAt})
     `;
   }
-  
+
   /**
    * Récupère un snapshot
    */
@@ -872,24 +884,27 @@ class GenesisDB {
       SELECT state_data FROM state_snapshots WHERE id = ${id}
       ORDER BY created_at DESC LIMIT 1
     `;
-    
+
     return result.length > 0 ? result[0].state_data : null;
   }
-  
+
   /**
    * S'abonne aux changements d'un canal
    */
-  async subscribe(channel: string, callback: (data: any) => void): Promise<() => void> {
+  async subscribe(
+    channel: string,
+    callback: (data: any) => void,
+  ): Promise<() => void> {
     await this.redisPubSub.subscribe(channel, (message) => {
       callback(JSON.parse(message));
     });
-    
+
     // Retourne une fonction de désabonnement
     return () => {
       this.redisPubSub.unsubscribe(channel);
     };
   }
-  
+
   /**
    * Vérifie la santé des connexions
    */
@@ -905,7 +920,7 @@ class GenesisDB {
       };
     }
   }
-  
+
   /**
    * Ferme les connexions
    */
@@ -931,7 +946,7 @@ class GenesisDB {
 
 ```json
 {
-  "workspace": ["./src/openclaw"],
+  "workspace": ["./src/genesis-core"],
   "tasks": {
     "start": "deno run --allow-all src/main.ts",
     "dev": "deno run --watch --allow-all src/main.ts",

@@ -2,7 +2,7 @@
 
 👶 1. EXPLICATION SIMPLE (La Métaphore du Robot)
 
-Imagine que tu viens d'acheter un robot super-intelligent (OpenClaw). Le problème, c'est qu'il est tellement zélé qu'il pourrait nettoyer ta maison en jetant tes papiers importants à la poubelle.
+Imagine que tu viens d'acheter un robot super-intelligent (GenesisCore). Le problème, c'est qu'il est tellement zélé qu'il pourrait nettoyer ta maison en jetant tes papiers importants à la poubelle.
 Dans la Phase 1, nous ne touchons pas au cerveau du robot. Nous allons simplement l'enfermer dans une "Cage Transparente" (Le Guardian). S'il veut jeter un papier, il doit taper à la vitre et te demander : "Puis-je jeter ceci ?". Tu dis oui ou non.
 Résultat : Tu as l'intelligence de l'IA, mais avec une sécurité absolue à 100%.
 
@@ -18,7 +18,7 @@ Sprint 1 : Création de la Cage (Jours 1-3)
 
 Sprint 2 : Connexion et Test (Jours 4-7)
 
-Étape 4 : L'Importation d'OpenClaw. Prendre le code "cerveau" d'OpenClaw (sa façon de réfléchir) et le brancher dans notre corps Deno.
+Étape 4 : L'Importation d'GenesisCore. Prendre le code "cerveau" d'GenesisCore (sa façon de réfléchir) et le brancher dans notre corps Deno.
 
 Étape 5 : Le Pont Telegram. Connecter le Guardian à un Bot Telegram. Quand l'Intercepteur met une action en pause, il envoie un message avec deux boutons (Autoriser / Bloquer) sur ton téléphone.
 
@@ -32,17 +32,16 @@ Ceci est votre directive stricte pour la Phase 1. Votre objectif est l'ISOLATION
 A. Structure du Projet
 
 genesis-core/
-├── deno.json           # Configuration stricte
+├── deno.json # Configuration stricte
 ├── src/
-│   ├── main.ts         # Point d'entrée
-│   ├── guardian/
-│   │   ├── middleware.ts # Intercepteur des commandes système
-│   │   ├── evaluator.ts  # Moteur de scoring de risque (1 à 10)
-│   ├── openclaw/
-│   │   ├── bridge.ts     # Wrapper pour les Skills d'OpenClaw
-│   ├── mobile/
-│       ├── telegram.ts   # Connecteur Bot Telegram (HITL)
-
+│ ├── main.ts # Point d'entrée
+│ ├── guardian/
+│ │ ├── middleware.ts # Intercepteur des commandes système
+│ │ ├── evaluator.ts # Moteur de scoring de risque (1 à 10)
+│ ├── genesis-core/
+│ │ ├── bridge.ts # Wrapper pour les Skills d'GenesisCore
+│ ├── mobile/
+│ ├── telegram.ts # Connecteur Bot Telegram (HITL)
 
 B. Règles de Code Obligatoires
 

@@ -32,8 +32,8 @@ genesis-nexus/
 {
   "name": "@genesis/nexus",
   "version": "1.0.0",
-  "workspace": ["./src/openclaw"],
-  
+  "workspace": ["./src/genesis-core"],
+
   "tasks": {
     "start": "deno run --allow-all src/main.ts",
     "dev": "deno run --watch --allow-all src/main.ts",
@@ -44,7 +44,7 @@ genesis-nexus/
     "build": "deno run --allow-all scripts/build_release.ts",
     "migrate": "deno run --allow-all src/core/migrate.ts"
   },
-  
+
   "imports": {
     "postgres": "npm:postgres@^3.4.4",
     "ioredis": "npm:ioredis@^5.3.2",
@@ -52,7 +52,7 @@ genesis-nexus/
     "ws": "npm:ws@^8.18.0",
     "hmac": "npm:hmac@^0.2.0"
   },
-  
+
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
@@ -165,7 +165,7 @@ export interface A2AConfig {
 }
 
 export const defaultA2AConfig: A2AConfig = {
-  version: '1.0.0',
+  version: "1.0.0",
   heartbeat: {
     interval: 30000,
     timeout: 90000,
