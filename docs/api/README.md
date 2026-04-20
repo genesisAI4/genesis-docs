@@ -39,13 +39,16 @@ npx @asyncapi/cli validate docs/api/nexus-a2a-ws.yaml
 
 ### Générer des SDKs typés (TypeScript / Swift / Kotlin)
 
+> Exécuter depuis la **racine du repo `genesis-docs`**. Les chemins de sortie
+> restent à l'intérieur du repo (sous `sdk/`).
+
 ```bash
 # Client TypeScript pour la REST API (pour genesis-mobile, genesis-desktop, genesis-cloud-api)
-npx openapi-typescript docs/api/nexus-rest.yaml -o ../../sdk/nexus-rest.d.ts
+npx openapi-typescript docs/api/nexus-rest.yaml -o sdk/nexus-rest.d.ts
 
 # Client AsyncAPI TypeScript (types de messages WS)
 npx @asyncapi/generator docs/api/nexus-a2a-ws.yaml @asyncapi/ts-nats-template \
-  -o ../../sdk/nexus-ws
+  -o sdk/nexus-ws
 ```
 
 ## Autorité et amendements
