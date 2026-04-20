@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesis Logo - Premium Animations V2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        genesis: {
+                            obsidian: '#09090B',
+                            surface: '#18181B',
+                            neon: '#3B82F6',
+                            amber: '#F59E0B',
+                            titanium: '#E4E4E7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #09090B; color: #E4E4E7; font-family: system-ui; }
+        .demo-card { background: rgba(24, 24, 27, 0.6); backdrop-filter: blur(12px); }
+        
+        /* ANIMATION 1: ETERNAL PULSE - Respiration élégante continue */
+        .anim-eternal-pulse .bracket-left,
+        .anim-eternal-pulse .bracket-right {
+            animation: eternal-pulse-brackets 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .anim-eternal-pulse .core-box {
+            animation: eternal-pulse-core 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .anim-eternal-pulse .core-pupil {
+            animation: eternal-pulse-pupil 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes eternal-pulse-brackets {
+            0%, 100% { 
+                stroke-width: 6;
+                opacity: 0.8;
+                filter: drop-shadow(0 0 4px rgba(228, 228, 231, 0.2));
+            }
+            50% { 
+                stroke-width: 7;
+                opacity: 1;
+                filter: drop-shadow(0 0 12px rgba(228, 228, 231, 0.5));
+            }
+        }
+        @keyframes eternal-pulse-core {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+            }
+            50% { 
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+            }
+        }
+        @keyframes eternal-pulse-pupil {
+            0%, 100% { r: 4; opacity: 1; }
+            50% { r: 5; opacity: 0.8; }
+        }
+
+        /* ANIMATION 2: ORBITAL DANCE - Rotation douce des éléments */
+        .anim-orbital-dance .bracket-left {
+            transform-origin: 30px 50px;
+            animation: orbital-left 8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+        .anim-orbital-dance .bracket-right {
+            transform-origin: 70px 50px;
+            animation: orbital-right 8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+        .anim-orbital-dance .core-box {
+            transform-origin: center;
+            animation: orbital-core 8s linear infinite;
+        }
+        .anim-orbital-dance .core-pupil {
+            animation: orbital-pupil 8s ease-in-out infinite;
+        }
+        
+        @keyframes orbital-left {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-8deg); }
+        }
+        @keyframes orbital-right {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(8deg); }
+        }
+        @keyframes orbital-core {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes orbital-pupil {
+            0%, 100% { cx: 50; cy: 50; }
+            25% { cx: 52; cy: 48; }
+            50% { cx: 50; cy: 50; }
+            75% { cx: 48; cy: 52; }
+        }
+
+        /* ANIMATION 3: WAVE HARMONY - Ondulation fluide */
+        .anim-wave-harmony .bracket-left {
+            animation: wave-left 3s ease-in-out infinite;
+        }
+        .anim-wave-harmony .bracket-right {
+            animation: wave-right 3s ease-in-out infinite;
+            animation-delay: -1.5s;
+        }
+        .anim-wave-harmony .core-box {
+            animation: wave-core 3s ease-in-out infinite;
+            animation-delay: -0.75s;
+        }
+        .anim-wave-harmony .core-pupil {
+            animation: wave-pupil 3s ease-in-out infinite;
+            animation-delay: -0.75s;
+        }
+        
+        @keyframes wave-left {
+            0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.9; }
+            33% { transform: translateY(-2px) scaleY(1.05); opacity: 1; }
+            66% { transform: translateY(2px) scaleY(0.95); opacity: 0.85; }
+        }
+        @keyframes wave-right {
+            0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.9; }
+            33% { transform: translateY(-2px) scaleY(1.05); opacity: 1; }
+            66% { transform: translateY(2px) scaleY(0.95); opacity: 0.85; }
+        }
+        @keyframes wave-core {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.03); }
+        }
+        @keyframes wave-pupil {
+            0%, 100% { cy: 50; r: 4; }
+            50% { cy: 48; r: 4.5; }
+        }
+
+        /* ANIMATION 4: QUANTUM FLOAT - Lévitation quantique */
+        .anim-quantum-float {
+            animation: quantum-container 6s ease-in-out infinite;
+        }
+        .anim-quantum-float .bracket-left {
+            animation: quantum-bracket-left 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .anim-quantum-float .bracket-right {
+            animation: quantum-bracket-right 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .anim-quantum-float .core-box {
+            animation: quantum-core 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .anim-quantum-float .core-pupil {
+            animation: quantum-pupil 6s ease-in-out infinite;
+        }
+        
+        @keyframes quantum-container {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes quantum-bracket-left {
+            0%, 100% { transform: translateX(0) scale(1); opacity: 0.9; }
+            25% { transform: translateX(-3px) scale(0.98); opacity: 0.7; }
+            50% { transform: translateX(0) scale(1.02); opacity: 1; }
+            75% { transform: translateX(3px) scale(0.98); opacity: 0.7; }
+        }
+        @keyframes quantum-bracket-right {
+            0%, 100% { transform: translateX(0) scale(1); opacity: 0.9; }
+            25% { transform: translateX(3px) scale(0.98); opacity: 0.7; }
+            50% { transform: translateX(0) scale(1.02); opacity: 1; }
+            75% { transform: translateX(-3px) scale(0.98); opacity: 0.7; }
+        }
+        @keyframes quantum-core {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));
+            }
+            50% { 
+                transform: scale(1.1) rotate(180deg);
+                filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.9));
+            }
+        }
+        @keyframes quantum-pupil {
+            0%, 100% { r: 4; opacity: 1; }
+            50% { r: 3; opacity: 0.6; }
+        }
+
+        /* ANIMATION 5: NEURAL SYNC - Synchronisation neuronale */
+        .anim-neural-sync .bracket-left {
+            animation: neural-left 2.5s ease-in-out infinite;
+        }
+        .anim-neural-sync .bracket-right {
+            animation: neural-right 2.5s ease-in-out infinite;
+        }
+        .anim-neural-sync .core-box {
+            animation: neural-core 2.5s ease-in-out infinite;
+        }
+        .anim-neural-sync .core-pupil {
+            animation: neural-pupil 2.5s steps(4, end) infinite;
+        }
+        
+        @keyframes neural-left {
+            0%, 100% { 
+                stroke-width: 6;
+                filter: drop-shadow(0 0 0 rgba(228, 228, 231, 0));
+            }
+            25% { 
+                stroke-width: 8;
+                filter: drop-shadow(0 0 15px rgba(228, 228, 231, 0.8));
+            }
+            50% { stroke-width: 6; }
+            75% { stroke-width: 5; }
+        }
+        @keyframes neural-right {
+            0%, 100% { 
+                stroke-width: 6;
+                filter: drop-shadow(0 0 0 rgba(228, 228, 231, 0));
+            }
+            25% { stroke-width: 5; }
+            50% { stroke-width: 6; }
+            75% { 
+                stroke-width: 8;
+                filter: drop-shadow(0 0 15px rgba(228, 228, 231, 0.8));
+            }
+        }
+        @keyframes neural-core {
+            0%, 100% { 
+                filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+            }
+            50% { 
+                filter: drop-shadow(0 0 20px rgba(59, 130, 246, 1));
+            }
+        }
+        @keyframes neural-pupil {
+            0% { cx: 50; cy: 50; }
+            25% { cx: 46; cy: 50; }
+            50% { cx: 50; cy: 46; }
+            75% { cx: 54; cy: 50; }
+            100% { cx: 50; cy: 54; }
+        }
+
+        /* ANIMATION 6: SOVEREIGN AURA - Aura souveraine */
+        .anim-sovereign-aura .bracket-left,
+        .anim-sovereign-aura .bracket-right {
+            animation: sovereign-brackets 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .anim-sovereign-aura .core-box {
+            animation: sovereign-core 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .anim-sovereign-aura .core-pupil {
+            animation: sovereign-pupil 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        
+        @keyframes sovereign-brackets {
+            0%, 100% { 
+                stroke-width: 6;
+                opacity: 0.7;
+                filter: drop-shadow(0 0 5px rgba(228, 228, 231, 0.3));
+            }
+            50% { 
+                stroke-width: 4;
+                opacity: 1;
+                filter: drop-shadow(0 0 25px rgba(228, 228, 231, 1));
+            }
+        }
+        @keyframes sovereign-core {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));
+            }
+            50% { 
+                transform: scale(1.2);
+                filter: drop-shadow(0 0 35px rgba(59, 130, 246, 1));
+            }
+        }
+        @keyframes sovereign-pupil {
+            0%, 100% { 
+                r: 4;
+                opacity: 1;
+            }
+            50% { 
+                r: 8;
+                opacity: 0.3;
+            }
+        }
+
+        /* ANIMATION 7: PRISMATIC SHIFT - Rotation prismatique */
+        .anim-prismatic-shift .bracket-left {
+            transform-origin: center;
+            animation: prismatic-left 10s linear infinite;
+        }
+        .anim-prismatic-shift .bracket-right {
+            transform-origin: center;
+            animation: prismatic-right 10s linear infinite;
+        }
+        .anim-prismatic-shift .core-box {
+            animation: prismatic-core 10s ease-in-out infinite;
+        }
+        .anim-prismatic-shift .core-pupil {
+            animation: prismatic-pupil 10s ease-in-out infinite;
+        }
+        
+        @keyframes prismatic-left {
+            0% { transform: rotate(0deg) translateX(0); }
+            100% { transform: rotate(360deg) translateX(0); }
+        }
+        @keyframes prismatic-right {
+            0% { transform: rotate(0deg) translateX(0); }
+            100% { transform: rotate(-360deg) translateX(0); }
+        }
+        @keyframes prismatic-core {
+            0%, 100% { 
+                transform: scale(1);
+                rx: 4;
+            }
+            25% { 
+                transform: scale(1.05);
+                rx: 8;
+            }
+            50% { 
+                transform: scale(1);
+                rx: 12;
+            }
+            75% { 
+                transform: scale(1.05);
+                rx: 8;
+            }
+        }
+        @keyframes prismatic-pupil {
+            0%, 100% { r: 4; }
+            50% { r: 5; }
+        }
+
+        /* ANIMATION 8: ZENITH BLOOM - Floraison élégante */
+        .anim-zenith-bloom .bracket-left,
+        .anim-zenith-bloom .bracket-right {
+            animation: zenith-brackets 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .anim-zenith-bloom .core-box {
+            animation: zenith-core 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .anim-zenith-bloom .core-pupil {
+            animation: zenith-pupil 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        
+        @keyframes zenith-brackets {
+            0%, 100% { 
+                transform: scale(1);
+                stroke-width: 6;
+                opacity: 1;
+                filter: drop-shadow(0 0 0 rgba(228, 228, 231, 0));
+            }
+            30% { 
+                transform: scale(0.95);
+                stroke-width: 5;
+                opacity: 0.6;
+                filter: drop-shadow(0 0 10px rgba(228, 228, 231, 0.5));
+            }
+            50% { 
+                transform: scale(1.1);
+                stroke-width: 3;
+                opacity: 0.3;
+                filter: drop-shadow(0 0 30px rgba(228, 228, 231, 1));
+            }
+            70% { 
+                transform: scale(0.95);
+                stroke-width: 5;
+                opacity: 0.6;
+                filter: drop-shadow(0 0 10px rgba(228, 228, 231, 0.5));
+            }
+        }
+        @keyframes zenith-core {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+            }
+            50% { 
+                transform: scale(1.4);
+                filter: drop-shadow(0 0 50px rgba(59, 130, 246, 1));
+            }
+        }
+        @keyframes zenith-pupil {
+            0%, 100% { 
+                r: 4;
+                opacity: 1;
+            }
+            50% { 
+                r: 12;
+                opacity: 0.2;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4">Genesis Logo Animations V2</h1>
+            <p class="text-gray-400 text-lg">Premium • Continuous • Elegant</p>
+            <p class="text-sm text-gray-500 mt-2">8 animations sophistiquées en boucle infinie</p>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Animation 1 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-eternal-pulse" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Eternal Pulse</h3>
+                <p class="text-xs text-gray-400 mb-4">Respiration élégante • 4s</p>
+                <button onclick="downloadAnimation('eternal-pulse')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 2 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-orbital-dance" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Orbital Dance</h3>
+                <p class="text-xs text-gray-400 mb-4">Rotation harmonieuse • 8s</p>
+                <button onclick="downloadAnimation('orbital-dance')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 3 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-wave-harmony" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Wave Harmony</h3>
+                <p class="text-xs text-gray-400 mb-4">Ondulation fluide • 3s</p>
+                <button onclick="downloadAnimation('wave-harmony')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 4 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-quantum-float" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Quantum Float</h3>
+                <p class="text-xs text-gray-400 mb-4">Lévitation quantique • 6s</p>
+                <button onclick="downloadAnimation('quantum-float')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 5 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-neural-sync" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Neural Sync</h3>
+                <p class="text-xs text-gray-400 mb-4">Synchronisation • 2.5s</p>
+                <button onclick="downloadAnimation('neural-sync')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 6 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-sovereign-aura" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Sovereign Aura</h3>
+                <p class="text-xs text-gray-400 mb-4">Aura souveraine • 5s</p>
+                <button onclick="downloadAnimation('sovereign-aura')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 7 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-prismatic-shift" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Prismatic Shift</h3>
+                <p class="text-xs text-gray-400 mb-4">Rotation prismatique • 10s</p>
+                <button onclick="downloadAnimation('prismatic-shift')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+            <!-- Animation 8 -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg class="anim-zenith-bloom" width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path class="bracket-left" d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <path class="bracket-right" d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" stroke="#E4E4E7" stroke-width="6" stroke-linecap="round"/>
+                        <rect class="core-box" x="35" y="35" width="30" height="30" rx="4" fill="#3B82F6"/>
+                        <circle class="core-pupil" cx="50" cy="50" r="4" fill="#09090B"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Zenith Bloom</h3>
+                <p class="text-xs text-gray-400 mb-4">Floraison élégante • 7s</p>
+                <button onclick="downloadAnimation('zenith-bloom')" class="w-full px-4 py-2 bg-genesis-neon text-white rounded-lg font-medium hover:bg-genesis-neon/90 transition text-sm">
+                    Download SVG
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="mt-16 demo-card p-8 rounded-2xl border border-white/5">
+            <h2 class="text-3xl font-bold mb-6">Usage Recommandé</h2>
+            <div class="grid md:grid-cols-2 gap-8 text-sm">
+                <div>
+                    <div class="font-bold text-genesis-neon mb-4">Subtiles & Élégantes</div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="font-semibold text-white">Eternal Pulse</div>
+                            <div class="text-gray-400">Background ambiant, idle state premium</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">Wave Harmony</div>
+                            <div class="text-gray-400">Onboarding flow, transitions douces</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">Sovereign Aura</div>
+                            <div class="text-gray-400">Feature highlights, premium sections</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="font-bold text-genesis-neon mb-4">Dynamiques & Sophistiquées</div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="font-semibold text-white">Orbital Dance</div>
+                            <div class="text-gray-400">Loading screens, data sync visualization</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">Quantum Float</div>
+                            <div class="text-gray-400">AI processing, workflow execution</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">Neural Sync</div>
+                            <div class="text-gray-400">Active states, real-time processing</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">Prismatic Shift</div>
+                            <div class="text-gray-400">Hero sections, splash screens</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-white">Zenith Bloom</div>
+                            <div class="text-gray-400">Success states, achievement celebrations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const animations = {
+            'eternal-pulse': `<!-- Generated with love, add this to the download --> Placeholder for SVG`,
+            // Add all 8 animations here in production
+        };
+
+        function downloadAnimation(name) {
+            // Placeholder - implement full SVG download
+            alert(`Download ${name} - Implementation needed`);
+        }
+    </script>
+</body>
+</html>

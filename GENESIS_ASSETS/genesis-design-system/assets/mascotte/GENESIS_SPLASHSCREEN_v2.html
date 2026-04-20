@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genesis Technologies</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            genesis: {
+              obsidian: '#09090B',
+              surface: '#18181B',
+              neon: '#3B82F6',
+              amber: '#F59E0B',
+              titanium: '#E4E4E7',
+            }
+          },
+          fontFamily: {
+            display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #09090B;
+      color: #E4E4E7;
+      overflow: hidden;
+    }
+
+    /* Animation d'entrée du logo */
+    .logo-container {
+      animation: fadeInScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Guardian Brackets - Respiration subtile */
+    .bracket-left {
+      animation: breathe-left 4s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    .bracket-right {
+      animation: breathe-right 4s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes breathe-left {
+      0%, 100% {
+        transform: translateX(0) scale(1);
+      }
+      50% {
+        transform: translateX(-2px) scale(1.02);
+      }
+    }
+
+    @keyframes breathe-right {
+      0%, 100% {
+        transform: translateX(0) scale(1);
+      }
+      50% {
+        transform: translateX(2px) scale(1.02);
+      }
+    }
+
+    /* Nexus Core - Pulsation lueur */
+    .core-box {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5));
+      }
+      50% {
+        filter: drop-shadow(0 0 24px rgba(59, 130, 246, 0.9));
+      }
+    }
+
+    /* Intelligence Spark - Scan subtil */
+    .core-pupil {
+      transform-origin: center;
+      animation: scan-eye 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes scan-eye {
+      0%, 15% {
+        transform: translate(0, 0);
+      }
+      20%, 30% {
+        transform: translate(-6px, 0);
+      }
+      35%, 50% {
+        transform: translate(6px, 0);
+      }
+      55%, 65% {
+        transform: translate(0, -5px);
+      }
+      70%, 85% {
+        transform: translate(0, 5px);
+      }
+      90%, 100% {
+        transform: translate(0, 0);
+      }
+    }
+
+    /* Wordmark fade-in retardé */
+    .wordmark {
+      animation: fadeInUp 1s ease-out 0.6s forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Halo d'arrière-plan animé */
+    .glow-halo {
+      animation: halo-pulse 6s ease-in-out infinite;
+    }
+
+    @keyframes halo-pulse {
+      0%, 100% {
+        opacity: 0.15;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scale(1.1);
+      }
+    }
+
+    /* Fade-out complet (après 5 secondes) */
+    .splash-container {
+      animation: fadeOutScreen 1s ease-in forwards;
+      animation-delay: 5s;
+    }
+
+    @keyframes fadeOutScreen {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.05);
+        visibility: hidden;
+      }
+    }
+
+    /* Status indicator subtil */
+    .status-dot {
+      animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center relative">
+
+  <!-- Halo d'arrière-plan -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="glow-halo w-[500px] h-[500px] bg-genesis-neon/20 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Container principal avec fade-out -->
+  <div class="splash-container relative z-10 flex flex-col items-center">
+
+    <!-- Logo animé -->
+    <div class="logo-container mb-6">
+      <svg width="200" height="200" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        
+        <!-- Guardian Bracket LEFT -->
+        <path 
+          class="bracket-left"
+          d="M 30 10 L 15 10 C 12.239 10 10 12.239 10 15 L 10 85 C 10 87.761 12.239 90 15 90 L 30 90" 
+          stroke="#E4E4E7" 
+          stroke-width="6" 
+          stroke-linecap="round"
+        />
+
+        <!-- Guardian Bracket RIGHT -->
+        <path 
+          class="bracket-right"
+          d="M 70 10 L 85 10 C 87.761 10 90 12.239 90 15 L 90 85 C 90 87.761 87.761 90 85 90 L 70 90" 
+          stroke="#E4E4E7" 
+          stroke-width="6" 
+          stroke-linecap="round"
+        />
+
+        <!-- Nexus Core -->
+        <rect 
+          class="core-box" 
+          x="35" 
+          y="35" 
+          width="30" 
+          height="30" 
+          rx="4" 
+          fill="#3B82F6"
+        />
+
+        <!-- Intelligence Spark -->
+        <circle 
+          class="core-pupil" 
+          cx="50" 
+          cy="50" 
+          r="4" 
+          fill="#09090B"
+        />
+      </svg>
+    </div>
+
+    <!-- Wordmark -->
+    <h1 class="wordmark font-display text-5xl font-bold tracking-[0.25em] text-white mb-8">
+      GENESIS
+    </h1>
+
+    <!-- Status indicator subtil -->
+    <div class="wordmark flex items-center gap-2 text-xs text-gray-500">
+      <span class="status-dot w-2 h-2 rounded-full bg-genesis-neon"></span>
+      <span class="tracking-wider">INITIALIZING</span>
+    </div>
+
+  </div>
+
+  <script>
+    // Rediriger vers app après animation (6 secondes total)
+    setTimeout(() => {
+      // window.location.href = '/app'; // Décommenter en production
+      console.log('Splash complete. Redirect to app.');
+    }, 6000);
+  </script>
+
+</body>
+
+</html>

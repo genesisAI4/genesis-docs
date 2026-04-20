@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poly Guardian - Version Finale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        genesis: {
+                            obsidian: '#09090B',
+                            surface: '#18181B',
+                            neon: '#3B82F6',
+                            amber: '#F59E0B',
+                            titanium: '#E4E4E7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background: #09090B; 
+            color: #E4E4E7; 
+            font-family: system-ui; 
+        }
+        .demo-card { 
+            background: rgba(24, 24, 27, 0.6); 
+            backdrop-filter: blur(12px); 
+        }
+
+        /* POLY GUARDIAN - Animation lévitation + tentacules flottants */
+        .poly-guardian-animated .core {
+            animation: levitate 4s ease-in-out infinite;
+            transform-origin: center center;
+        }
+
+        .poly-guardian-animated .antenna {
+            animation: antenna-sway 3s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+        .poly-guardian-animated .antenna-left {
+            animation-delay: -0.5s;
+        }
+        .poly-guardian-animated .antenna-right {
+            animation-delay: 0s;
+        }
+
+        /* Tentacules flottants avec délais décalés */
+        .poly-guardian-animated .tentacle-1 {
+            animation: tentacle-float 5s ease-in-out infinite;
+            animation-delay: 0s;
+            transform-origin: 40px 40px;
+        }
+        .poly-guardian-animated .tentacle-2 {
+            animation: tentacle-float 5s ease-in-out infinite;
+            animation-delay: -1.25s;
+            transform-origin: 60px 40px;
+        }
+        .poly-guardian-animated .tentacle-3 {
+            animation: tentacle-float 5s ease-in-out infinite;
+            animation-delay: -2.5s;
+            transform-origin: 40px 50px;
+        }
+        .poly-guardian-animated .tentacle-4 {
+            animation: tentacle-float 5s ease-in-out infinite;
+            animation-delay: -3.75s;
+            transform-origin: 60px 50px;
+        }
+
+        /* Keyframes */
+        @keyframes levitate {
+            0%, 100% { 
+                transform: translateY(0); 
+            }
+            50% { 
+                transform: translateY(-6px); 
+            }
+        }
+
+        @keyframes antenna-sway {
+            0%, 100% { 
+                transform: rotate(0deg); 
+            }
+            50% { 
+                transform: rotate(-3deg); 
+            }
+        }
+
+        @keyframes tentacle-float {
+            0%, 100% { 
+                transform: translateX(0) translateY(0) rotate(0deg);
+            }
+            25% { 
+                transform: translateX(-2px) translateY(-3px) rotate(-2deg);
+            }
+            50% { 
+                transform: translateX(2px) translateY(-1px) rotate(2deg);
+            }
+            75% { 
+                transform: translateX(-1px) translateY(2px) rotate(-1deg);
+            }
+        }
+
+        /* États Guardian */
+        .state-preview svg {
+            transition: all 0.3s ease;
+        }
+        .state-preview:hover svg {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <div class="inline-block px-6 py-3 bg-genesis-amber/20 border border-genesis-amber rounded-full text-genesis-amber text-sm font-bold mb-6 tracking-wider">
+                NEXUS GUARDIAN
+            </div>
+            <h1 class="text-7xl font-bold mb-4 tracking-tight">Poly Guardian</h1>
+            <p class="text-xl text-gray-400">Version Finale • Lévitation Subtile • Antennes Élégantes</p>
+        </div>
+
+        <!-- Main Hero -->
+        <div class="demo-card p-12 rounded-3xl border-2 border-genesis-amber/30 mb-16">
+            <div class="h-[600px] flex items-center justify-center bg-genesis-obsidian rounded-3xl relative overflow-hidden">
+                <!-- Background glow -->
+                <div class="absolute inset-0 bg-gradient-radial from-genesis-amber/10 via-transparent to-transparent"></div>
+                <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 40%, rgba(245, 158, 11, 0.08), transparent 50%)"></div>
+                
+                <!-- Main Guardian -->
+                <svg class="poly-guardian-animated relative z-10" width="400" height="400" viewBox="0 0 100 100" fill="none">
+                    <!-- Antennes élégantes (style cornes/antennes) -->
+                    <g class="antenna antenna-left">
+                        <!-- Antenne gauche - forme élancée -->
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" 
+                              stroke="#E4E4E7" 
+                              stroke-width="2.5" 
+                              stroke-linecap="round" 
+                              stroke-linejoin="round"
+                              fill="none"/>
+                        <path d="M 38 12 L 35 8" 
+                              stroke="#F59E0B" 
+                              stroke-width="2" 
+                              stroke-linecap="round"
+                              opacity="0.8"/>
+                        <!-- Cristal au bout -->
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#F59E0B" opacity="0.9"/>
+                        <circle cx="30" cy="3" r="2" fill="#F59E0B" opacity="0.5"/>
+                    </g>
+                    
+                    <g class="antenna antenna-right">
+                        <!-- Antenne droite - symétrique -->
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" 
+                              stroke="#E4E4E7" 
+                              stroke-width="2.5" 
+                              stroke-linecap="round" 
+                              stroke-linejoin="round"
+                              fill="none"/>
+                        <path d="M 62 12 L 65 8" 
+                              stroke="#F59E0B" 
+                              stroke-width="2" 
+                              stroke-linecap="round"
+                              opacity="0.8"/>
+                        <!-- Cristal au bout -->
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#F59E0B" opacity="0.9"/>
+                        <circle cx="70" cy="3" r="2" fill="#F59E0B" opacity="0.5"/>
+                    </g>
+                    
+                    <!-- Core (corps central - hexagone 3D) -->
+                    <g class="core">
+                        <!-- Face avant (hexagone) -->
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#3B82F6"/>
+                        <!-- Facettes 3D (lumière) -->
+                        <polygon points="50,25 62,31 57,28" fill="#60A5FA" opacity="0.6"/>
+                        <polygon points="38,31 50,25 45,28" fill="#60A5FA" opacity="0.7"/>
+                        <!-- Facettes 3D (ombre) -->
+                        <polygon points="62,31 62,43 59,37" fill="#1D4ED8" opacity="0.6"/>
+                        <polygon points="38,31 38,43 41,37" fill="#2563EB" opacity="0.5"/>
+                        <!-- Face bas -->
+                        <polygon points="38,43 50,49 62,43" fill="#1E40AF" opacity="0.4"/>
+                        
+                        <!-- Pupil central (diamant) -->
+                        <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                        <circle cx="49" cy="38" r="0.8" fill="#60A5FA" opacity="0.6"/>
+                    </g>
+                    
+                    <!-- Tentacules (4 chaînes de polyèdres flottants) -->
+                    
+                    <!-- Tentacle 1 (top-left) -->
+                    <g class="tentacle-1">
+                        <polygon points="33,42 38,45 38,52 33,55 28,52 28,45" fill="#3B82F6" opacity="0.95"/>
+                        <polygon points="33,42 38,45 36,43" fill="#60A5FA" opacity="0.5"/>
+                        
+                        <polygon points="26,54 30,56 30,62 26,64 22,62 22,56" fill="#3B82F6" opacity="0.85"/>
+                        <polygon points="26,54 30,56 28,54" fill="#60A5FA" opacity="0.4"/>
+                        
+                        <polygon points="20,65 23,67 23,72 20,74 17,72 17,67" fill="#3B82F6" opacity="0.75"/>
+                        <polygon points="20,65 23,67 21,65" fill="#60A5FA" opacity="0.3"/>
+                        
+                        <polygon points="15,75 17,77 17,80 15,82 13,80 13,77" fill="#3B82F6" opacity="0.65"/>
+                    </g>
+                    
+                    <!-- Tentacle 2 (top-right) -->
+                    <g class="tentacle-2">
+                        <polygon points="67,42 72,45 72,52 67,55 62,52 62,45" fill="#3B82F6" opacity="0.95"/>
+                        <polygon points="67,42 72,45 70,43" fill="#60A5FA" opacity="0.5"/>
+                        
+                        <polygon points="74,54 78,56 78,62 74,64 70,62 70,56" fill="#3B82F6" opacity="0.85"/>
+                        <polygon points="74,54 78,56 76,54" fill="#60A5FA" opacity="0.4"/>
+                        
+                        <polygon points="80,65 83,67 83,72 80,74 77,72 77,67" fill="#3B82F6" opacity="0.75"/>
+                        <polygon points="80,65 83,67 81,65" fill="#60A5FA" opacity="0.3"/>
+                        
+                        <polygon points="85,75 87,77 87,80 85,82 83,80 83,77" fill="#3B82F6" opacity="0.65"/>
+                    </g>
+                    
+                    <!-- Tentacle 3 (bottom-left) -->
+                    <g class="tentacle-3">
+                        <polygon points="40,54 45,57 45,63 40,66 35,63 35,57" fill="#3B82F6" opacity="0.95"/>
+                        <polygon points="40,54 45,57 43,55" fill="#60A5FA" opacity="0.5"/>
+                        
+                        <polygon points="33,66 37,68 37,73 33,75 29,73 29,68" fill="#3B82F6" opacity="0.85"/>
+                        <polygon points="33,66 37,68 35,66" fill="#60A5FA" opacity="0.4"/>
+                        
+                        <polygon points="27,75 30,77 30,81 27,83 24,81 24,77" fill="#3B82F6" opacity="0.75"/>
+                        <polygon points="27,75 30,77 28,75" fill="#60A5FA" opacity="0.3"/>
+                    </g>
+                    
+                    <!-- Tentacle 4 (bottom-right) -->
+                    <g class="tentacle-4">
+                        <polygon points="60,54 65,57 65,63 60,66 55,63 55,57" fill="#3B82F6" opacity="0.95"/>
+                        <polygon points="60,54 65,57 63,55" fill="#60A5FA" opacity="0.5"/>
+                        
+                        <polygon points="67,66 71,68 71,73 67,75 63,73 63,68" fill="#3B82F6" opacity="0.85"/>
+                        <polygon points="67,66 71,68 69,66" fill="#60A5FA" opacity="0.4"/>
+                        
+                        <polygon points="73,75 76,77 76,81 73,83 70,81 70,77" fill="#3B82F6" opacity="0.75"/>
+                        <polygon points="73,75 76,77 74,75" fill="#60A5FA" opacity="0.3"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- États et Variations -->
+        <h2 class="text-4xl font-bold mb-8 text-center">États du Guardian</h2>
+        <p class="text-center text-gray-400 mb-12">Différentes couleurs selon le contexte</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+            
+            <!-- Idle (Bleu) -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5 state-preview">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg width="160" height="160" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#3B82F6" opacity="0.9"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#3B82F6" opacity="0.9"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#3B82F6"/>
+                        <polygon points="50,25 62,31 57,28" fill="#60A5FA" opacity="0.6"/>
+                        <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="font-bold mb-1">Idle</div>
+                    <div class="text-xs text-gray-500">Mode repos</div>
+                </div>
+            </div>
+
+            <!-- Success (Vert) -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5 state-preview">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg width="160" height="160" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#10B981" opacity="0.9"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#10B981" opacity="0.9"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#10B981"/>
+                        <polygon points="50,25 62,31 57,28" fill="#34D399" opacity="0.6"/>
+                        <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="font-bold mb-1">Success</div>
+                    <div class="text-xs text-gray-500">Action réussie</div>
+                </div>
+            </div>
+
+            <!-- Guardian (Amber) -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5 state-preview">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg width="160" height="160" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#F59E0B" opacity="0.9"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#F59E0B" opacity="0.9"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#F59E0B"/>
+                        <polygon points="50,25 62,31 57,28" fill="#FCD34D" opacity="0.6"/>
+                        <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                        <circle cx="50" cy="37" r="12" stroke="#F59E0B" stroke-width="1" fill="none" opacity="0.4"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="font-bold mb-1">Guardian</div>
+                    <div class="text-xs text-gray-500">Mode protection</div>
+                </div>
+            </div>
+
+            <!-- Alert (Rouge) -->
+            <div class="demo-card p-6 rounded-2xl border border-white/5 state-preview">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-xl mb-4">
+                    <svg width="160" height="160" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#EF4444" opacity="0.9"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#EF4444" opacity="0.9"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#EF4444"/>
+                        <polygon points="50,25 62,31 57,28" fill="#F87171" opacity="0.6"/>
+                        <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="font-bold mb-1">Alert</div>
+                    <div class="text-xs text-gray-500">Attention requise</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Caractéristiques -->
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="demo-card p-8 rounded-2xl border border-white/5">
+                <div class="text-4xl mb-4">✨</div>
+                <h3 class="text-xl font-bold mb-3">Lévitation Élégante</h3>
+                <p class="text-gray-400 text-sm">Mouvement vertical doux et continu, créant une sensation de présence éthérée</p>
+            </div>
+
+            <div class="demo-card p-8 rounded-2xl border border-white/5">
+                <div class="text-4xl mb-4">🎭</div>
+                <h3 class="text-xl font-bold mb-3">Tentacules Organiques</h3>
+                <p class="text-gray-400 text-sm">Chaque tentacule flotte indépendamment avec son propre rythme naturel</p>
+            </div>
+
+            <div class="demo-card p-8 rounded-2xl border border-white/5">
+                <div class="text-4xl mb-4">🔷</div>
+                <h3 class="text-xl font-bold mb-3">Antennes Cristallines</h3>
+                <p class="text-gray-400 text-sm">Forme élancée et élégante avec cristaux lumineux aux extrémités</p>
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="demo-card p-8 rounded-2xl border border-white/5 mb-16">
+            <h2 class="text-2xl font-bold mb-6">Détails Techniques</h2>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div>
+                    <h3 class="font-bold text-genesis-amber mb-3">Animation</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>• <strong>Lévitation:</strong> 4s cycle, -6px hauteur</li>
+                        <li>• <strong>Tentacules:</strong> 5s cycle, mouvement organique</li>
+                        <li>• <strong>Antennes:</strong> 3s sway, -3° rotation</li>
+                        <li>• <strong>Délais:</strong> Décalés pour effet naturel</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-genesis-amber mb-3">Style</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>• <strong>Géométrie:</strong> Low-poly hexagones</li>
+                        <li>• <strong>Effets 3D:</strong> Facettes lumière/ombre</li>
+                        <li>• <strong>Transparence:</strong> Opacité dégradée</li>
+                        <li>• <strong>Couleurs:</strong> 4 états contextuels</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="text-center demo-card p-12 rounded-3xl border-2 border-genesis-amber/30">
+            <div class="inline-block px-6 py-3 bg-genesis-amber/20 rounded-full text-genesis-amber text-sm font-bold mb-6 tracking-wider">
+                PRÊT POUR L'EXPORT
+            </div>
+            <h2 class="text-4xl font-bold mb-4">Poly Guardian Finalisé</h2>
+            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                Antennes élégantes ✓ Lévitation subtile ✓ Tentacules organiques ✓
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button onclick="downloadSVG('idle')" class="px-6 py-3 bg-genesis-neon hover:bg-genesis-neon/80 rounded-lg font-semibold transition-all">
+                    Télécharger SVG
+                </button>
+                <button onclick="downloadAnimated()" class="px-6 py-3 bg-genesis-amber hover:bg-genesis-amber/80 rounded-lg font-semibold transition-all">
+                    Télécharger Animé
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function downloadSVG(state) {
+            alert('Export SVG - Feature coming soon!');
+            // TODO: Implement SVG export with chosen state
+        }
+
+        function downloadAnimated() {
+            alert('Export Animé - Feature coming soon!');
+            // TODO: Implement animated SVG export
+        }
+    </script>
+</body>
+</html>

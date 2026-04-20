@@ -1,0 +1,341 @@
+/**
+ * GENESIS DESIGN SYSTEM — Branding & Mascot Styles
+ *
+ * Usage: Import after tokens.css and components.css
+ *   <link rel="stylesheet" href="genesis-design-system/tokens.css">
+ *   <link rel="stylesheet" href="genesis-design-system/components.css">
+ *   <link rel="stylesheet" href="genesis-design-system/branding.css">
+ *
+ * Version: 1.0.0
+ */
+
+/* ═══════════════════════════════════════════
+   LOGO STYLES
+   ═══════════════════════════════════════════ */
+
+.genesis-logo {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.genesis-logo--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.genesis-logo--md {
+  width: 48px;
+  height: 48px;
+}
+
+.genesis-logo--lg {
+  width: 80px;
+  height: 80px;
+}
+
+.genesis-logo--xl {
+  width: 160px;
+  height: 160px;
+}
+
+.genesis-logo--fullcolor {
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+}
+
+.genesis-logo--white {
+  filter: brightness(0) invert(1);
+}
+
+.genesis-logo--monochrome {
+  filter: grayscale(100%);
+}
+
+/* ═══════════════════════════════════════════
+   HEADER WITH LOGO
+   ═══════════════════════════════════════════ */
+
+.genesis-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--genesis-space-3);
+  text-decoration: none;
+  color: var(--genesis-white);
+  font-family: var(--genesis-font-display);
+  font-weight: 700;
+  font-size: var(--genesis-text-xl);
+  letter-spacing: var(--genesis-tracking-tight);
+}
+
+.genesis-brand:hover {
+  color: var(--genesis-neon);
+}
+
+.genesis-brand__name {
+  letter-spacing: var(--genesis-tracking-brand);
+  font-size: var(--genesis-text-lg);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   GUARDIAN MASCOT
+   ═══════════════════════════════════════════ */
+
+.genesis-guardian {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--genesis-space-4);
+}
+
+.genesis-guardian__container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.genesis-guardian__halo {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--genesis-neon-glow) 0%, transparent 70%);
+  animation: genesis-halo-pulse 6s ease-in-out infinite;
+}
+
+@keyframes genesis-halo-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.genesis-guardian__svg {
+  position: relative;
+  z-index: 1;
+  animation: genesis-guardian-breathe 4s ease-in-out infinite;
+}
+
+@keyframes genesis-guardian-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.genesis-guardian__name {
+  font-family: var(--genesis-font-display);
+  font-size: var(--genesis-text-lg);
+  font-weight: 700;
+  color: var(--genesis-neon);
+  letter-spacing: var(--genesis-tracking-wide);
+}
+
+.genesis-guardian__role {
+  font-size: var(--genesis-text-xs);
+  color: var(--genesis-zinc);
+  text-transform: uppercase;
+  letter-spacing: var(--genesis-tracking-wider);
+}
+
+/* ═══════════════════════════════════════════
+   SPLASH SCREEN
+   ═══════════════════════════════════════════ */
+
+.genesis-splash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--genesis-obsidian);
+  z-index: var(--genesis-z-modal);
+  animation: genesis-fade-in var(--genesis-duration-slow) var(--genesis-ease-out);
+}
+
+.genesis-splash__logo {
+  width: 200px;
+  height: 200px;
+  animation: genesis-splash-logo-in 0.8s var(--genesis-ease-out) both;
+}
+
+@keyframes genesis-splash-logo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.genesis-splash__wordmark {
+  font-family: var(--genesis-font-display);
+  font-size: var(--genesis-text-5xl);
+  font-weight: 700;
+  letter-spacing: var(--genesis-tracking-brand);
+  color: var(--genesis-white);
+  margin-top: var(--genesis-space-6);
+  animation: genesis-splash-fade-in 0.6s 0.3s var(--genesis-ease-out) both;
+}
+
+@keyframes genesis-splash-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.genesis-splash__status {
+  display: flex;
+  align-items: center;
+  gap: var(--genesis-space-2);
+  margin-top: var(--genesis-space-4);
+  font-size: var(--genesis-text-xs);
+  color: var(--genesis-zinc);
+  letter-spacing: var(--genesis-tracking-wider);
+  text-transform: uppercase;
+  animation: genesis-splash-fade-in 0.6s 0.5s var(--genesis-ease-out) both;
+}
+
+.genesis-splash__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--genesis-neon);
+  animation: genesis-pulse 2s ease-in-out infinite;
+}
+
+.genesis-splash__exit {
+  animation: genesis-splash-exit 0.5s 5s var(--genesis-ease-in) both;
+}
+
+@keyframes genesis-splash-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════
+   FAVICON HELPERS (HTML injection)
+   ═══════════════════════════════════════════ */
+
+/* To be used in <head>:
+<link rel="icon" type="image/png" sizes="32x32" href="genesis-design-system/assets/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="genesis-design-system/assets/favicons/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="genesis-design-system/assets/logos/genesis-logo-icon-512px.png">
+*/
+
+/* ═══════════════════════════════════════════
+   GUARDIAN BRACKETS (decorative element)
+   ═══════════════════════════════════════════ */
+
+.genesis-brackets {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--genesis-space-1);
+  font-family: var(--genesis-font-mono);
+  font-size: var(--genesis-text-xl);
+  color: var(--genesis-titanium);
+  animation: genesis-brackets-breathe 4s ease-in-out infinite;
+}
+
+@keyframes genesis-brackets-breathe {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-2px); }
+}
+
+.genesis-brackets__open,
+.genesis-brackets__close {
+  color: var(--genesis-titanium);
+}
+
+.genesis-brackets__content {
+  color: var(--genesis-neon);
+  margin: 0 var(--genesis-space-1);
+}
+
+/* ═══════════════════════════════════════════
+   NEXUS CORE GLOW (decorative)
+   ═══════════════════════════════════════════ */
+
+.genesis-nexus-core {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.genesis-nexus-core__glow {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--genesis-neon-bright) 0%, transparent 70%);
+  animation: genesis-nexus-pulse 3s ease-in-out infinite;
+  filter: blur(20px);
+}
+
+@keyframes genesis-nexus-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+.genesis-nexus-core__spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--genesis-white);
+  border-radius: 50%;
+  animation: genesis-spark-scan 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes genesis-spark-scan {
+  0% { transform: rotate(0deg) translateX(60px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════
+   WATERMARK (subtle background logo)
+   ═══════════════════════════════════════════ */
+
+.genesis-watermark {
+  position: absolute;
+  bottom: var(--genesis-space-4);
+  right: var(--genesis-space-4);
+  width: 120px;
+  height: 120px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: var(--genesis-z-base);
+}
+
+.genesis-watermark svg,
+.genesis-watermark img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+/* ═══════════════════════════════════════════
+   LOADING SPINNER (with Genesis accent)
+   ═══════════════════════════════════════════ */
+
+.genesis-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--genesis-border);
+  border-top-color: var(--genesis-neon);
+  border-radius: 50%;
+  animation: genesis-spin 0.8s linear infinite;
+}
+
+@keyframes genesis-spin {
+  to { transform: rotate(360deg); }
+}
+
+.genesis-spinner--lg {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
+}

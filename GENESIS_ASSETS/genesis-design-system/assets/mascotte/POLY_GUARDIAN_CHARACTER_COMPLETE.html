@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poly Guardian - Character Expressif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        genesis: {
+                            obsidian: '#09090B',
+                            surface: '#18181B',
+                            neon: '#3B82F6',
+                            amber: '#F59E0B',
+                            titanium: '#E4E4E7',
+                            green: '#10B981',
+                            red: '#EF4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #09090B; color: #E4E4E7; font-family: system-ui; }
+        .demo-card { background: rgba(24, 24, 27, 0.6); backdrop-filter: blur(12px); }
+
+        /* ANIMATION 1: Idle Levitation */
+        .poly-anim-idle .core {
+            animation: poly-idle-levitate 4s ease-in-out infinite;
+        }
+        .poly-anim-idle .tentacle {
+            animation: poly-idle-tentacle 5s ease-in-out infinite;
+        }
+        .poly-anim-idle .antenna {
+            animation: poly-idle-antenna 3s ease-in-out infinite;
+        }
+        
+        @keyframes poly-idle-levitate {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes poly-idle-tentacle {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+            50% { transform: translateY(-3px) rotate(2deg); opacity: 1; }
+        }
+        @keyframes poly-idle-antenna {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-3deg); }
+        }
+
+        /* ANIMATION 2: Excited Jump */
+        .poly-anim-excited {
+            animation: poly-excited-jump 0.8s ease-in-out infinite;
+        }
+        .poly-anim-excited .tentacle {
+            animation: poly-excited-tentacle 0.8s ease-in-out infinite;
+        }
+        .poly-anim-excited .antenna {
+            animation: poly-excited-antenna 0.8s ease-in-out infinite;
+        }
+        
+        @keyframes poly-excited-jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes poly-excited-tentacle {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+        @keyframes poly-excited-antenna {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-15deg); }
+        }
+
+        /* ANIMATION 3: Thinking Rotate */
+        .poly-anim-thinking .core {
+            animation: poly-thinking-tilt 2s ease-in-out infinite;
+        }
+        .poly-anim-thinking .pupil {
+            animation: poly-thinking-pupil 3s ease-in-out infinite;
+        }
+        
+        @keyframes poly-thinking-tilt {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-8deg); }
+        }
+        @keyframes poly-thinking-pupil {
+            0%, 100% { cx: 50; }
+            50% { cx: 48; }
+        }
+
+        /* ANIMATION 4: Scanning */
+        .poly-anim-scan .pupil {
+            animation: poly-scan-pupil 2s ease-in-out infinite;
+        }
+        .poly-anim-scan .antenna {
+            animation: poly-scan-antenna 2s ease-in-out infinite;
+        }
+        
+        @keyframes poly-scan-pupil {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+        @keyframes poly-scan-antenna {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        /* ANIMATION 5: Sleeping */
+        .poly-anim-sleep .core {
+            animation: poly-sleep-breathe 3s ease-in-out infinite;
+        }
+        .poly-anim-sleep .zzz {
+            animation: poly-sleep-zzz 2s ease-in-out infinite;
+        }
+        
+        @keyframes poly-sleep-breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        @keyframes poly-sleep-zzz {
+            0% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.8; transform: translateY(-5px); }
+            100% { opacity: 0.3; transform: translateY(-10px); }
+        }
+
+        /* ANIMATION 6: Working/Processing */
+        .poly-anim-work .core {
+            animation: poly-work-pulse 1s ease-in-out infinite;
+        }
+        .poly-anim-work .pupil {
+            animation: poly-work-focus 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes poly-work-pulse {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4)); }
+            50% { filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.8)); }
+        }
+        @keyframes poly-work-focus {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.8); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <div class="inline-block px-6 py-3 bg-genesis-amber/20 border border-genesis-amber rounded-full text-genesis-amber text-sm font-bold mb-6 tracking-wider">
+                POLY GUARDIAN CHARACTER
+            </div>
+            <h1 class="text-7xl font-bold mb-4 tracking-tight">Expressions & Animations</h1>
+            <p class="text-xl text-gray-400">10 Poses Émotionnelles • 6 Animations Continues</p>
+        </div>
+
+        <!-- Poses Section -->
+        <h2 class="text-4xl font-bold mb-8">Poses Émotionnelles (10)</h2>
+        <p class="text-gray-400 mb-12">Différentes expressions pour chaque contexte</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-20">
+            
+            <!-- Pose 1: Idle (Neutre) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-genesis-neon/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <!-- Antennes -->
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#3B82F6"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#3B82F6"/>
+                        <!-- Core -->
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#3B82F6"/>
+                        <polygon points="50,25 62,31 57,28" fill="#60A5FA" opacity="0.5"/>
+                        <!-- Yeux normaux (carrés) -->
+                        <rect x="42" y="33" width="5" height="5" rx="1" fill="#09090B"/>
+                        <rect x="53" y="33" width="5" height="5" rx="1" fill="#09090B"/>
+                        <circle cx="43.5" cy="34.5" r="1" fill="#60A5FA" opacity="0.6"/>
+                        <circle cx="54.5" cy="34.5" r="1" fill="#60A5FA" opacity="0.6"/>
+                        <!-- Tentacules -->
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#3B82F6" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#3B82F6" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Idle</div>
+                <div class="text-xs text-gray-500 text-center">Neutre</div>
+            </div>
+
+            <!-- Pose 2: Happy (Sourire) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-green-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#10B981"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#10B981"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#10B981"/>
+                        <polygon points="50,25 62,31 57,28" fill="#34D399" opacity="0.5"/>
+                        <!-- Yeux joyeux (arcs) -->
+                        <path d="M 42 35 Q 44.5 32 47 35" stroke="#09090B" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <path d="M 53 35 Q 55.5 32 58 35" stroke="#09090B" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <!-- Sourire -->
+                        <path d="M 43 40 Q 50 43 57 40" stroke="#09090B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#10B981" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#10B981" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Happy</div>
+                <div class="text-xs text-gray-500 text-center">😊</div>
+            </div>
+
+            <!-- Pose 3: Excited (Yeux étoiles) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-yellow-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 10 L 35 6 L 32 3 L 30 1" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,1 28,-1 30,-3 32,-1" fill="#F59E0B"/>
+                        <path d="M 62 10 L 65 6 L 68 3 L 70 1" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,1 68,-1 70,-3 72,-1" fill="#F59E0B"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#F59E0B"/>
+                        <polygon points="50,25 62,31 57,28" fill="#FCD34D" opacity="0.5"/>
+                        <!-- Yeux étoiles ⭐ -->
+                        <polygon points="44.5,35 45,33 45.5,35 47.5,35 46,36.5 46.5,38.5 44.5,37 42.5,38.5 43,36.5 41.5,35" fill="#FCD34D"/>
+                        <polygon points="55.5,35 56,33 56.5,35 58.5,35 57,36.5 57.5,38.5 55.5,37 53.5,38.5 54,36.5 52.5,35" fill="#FCD34D"/>
+                        <!-- Grande bouche ouverte -->
+                        <ellipse cx="50" cy="41" rx="5" ry="3" fill="#09090B"/>
+                        <polygon points="33,42 36,44 36,49 33,51 30,49 30,44" fill="#F59E0B" opacity="0.9"/>
+                        <polygon points="67,42 70,44 70,49 67,51 64,49 64,44" fill="#F59E0B" opacity="0.9"/>
+                        <!-- Lignes d'excitation -->
+                        <line x1="28" y1="30" x2="25" y2="28" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="72" y1="30" x2="75" y2="28" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Excited</div>
+                <div class="text-xs text-gray-500 text-center">🤩</div>
+            </div>
+
+            <!-- Pose 4: Thinking (Pensif) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-purple-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#8B5CF6"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#8B5CF6"/>
+                        <!-- Tête légèrement penchée -->
+                        <g transform="rotate(-5 50 37)">
+                            <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#8B5CF6"/>
+                            <polygon points="50,25 62,31 57,28" fill="#A78BFA" opacity="0.5"/>
+                            <!-- Yeux regardant en haut -->
+                            <rect x="42" y="31" width="5" height="5" rx="1" fill="#09090B"/>
+                            <rect x="53" y="31" width="5" height="5" rx="1" fill="#09090B"/>
+                            <circle cx="43.5" cy="32" r="1.5" fill="#A78BFA"/>
+                            <circle cx="54.5" cy="32" r="1.5" fill="#A78BFA"/>
+                        </g>
+                        <!-- Nuage de pensée -->
+                        <circle cx="70" cy="20" r="4" fill="#8B5CF6" opacity="0.3"/>
+                        <circle cx="73" cy="17" r="3" fill="#8B5CF6" opacity="0.2"/>
+                        <circle cx="76" cy="15" r="2" fill="#8B5CF6" opacity="0.1"/>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#8B5CF6" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#8B5CF6" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Thinking</div>
+                <div class="text-xs text-gray-500 text-center">🤔</div>
+            </div>
+
+            <!-- Pose 5: Sad (Triste) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-blue-400/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 14 L 35 10 L 32 7 L 30 5" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,5 28,3 30,1 32,3" fill="#60A5FA"/>
+                        <path d="M 62 14 L 65 10 L 68 7 L 70 5" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,5 68,3 70,1 72,3" fill="#60A5FA"/>
+                        <polygon points="50,27 62,33 62,45 50,51 38,45 38,33" fill="#60A5FA"/>
+                        <polygon points="50,27 62,33 57,30" fill="#93C5FD" opacity="0.5"/>
+                        <!-- Yeux tristes (arcs inversés) -->
+                        <path d="M 42 33 Q 44.5 36 47 33" stroke="#09090B" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <path d="M 53 33 Q 55.5 36 58 33" stroke="#09090B" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <!-- Larme -->
+                        <ellipse cx="47" cy="40" rx="1.5" ry="2.5" fill="#60A5FA" opacity="0.6"/>
+                        <!-- Bouche triste -->
+                        <path d="M 43 42 Q 50 39 57 42" stroke="#09090B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="33,47 36,49 36,54 33,56 30,54 30,49" fill="#60A5FA" opacity="0.9"/>
+                        <polygon points="67,47 70,49 70,54 67,56 64,54 64,49" fill="#60A5FA" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Sad</div>
+                <div class="text-xs text-gray-500 text-center">😢</div>
+            </div>
+
+            <!-- Pose 6: Angry (En colère) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-red-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#EF4444"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#EF4444"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#EF4444"/>
+                        <polygon points="50,25 62,31 57,28" fill="#F87171" opacity="0.5"/>
+                        <!-- Sourcils froncés (lignes) -->
+                        <line x1="40" y1="32" x2="47" y2="34" stroke="#09090B" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="53" y1="34" x2="60" y2="32" stroke="#09090B" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Yeux en colère (triangles) -->
+                        <polygon points="44.5,35 42,38 47,38" fill="#09090B"/>
+                        <polygon points="55.5,35 53,38 58,38" fill="#09090B"/>
+                        <!-- Bouche grognon -->
+                        <rect x="45" y="41" width="10" height="3" rx="1" fill="#09090B"/>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#EF4444" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#EF4444" opacity="0.9"/>
+                        <!-- Symbole colère -->
+                        <text x="68" y="22" fill="#EF4444" font-size="10" font-weight="bold">!</text>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Angry</div>
+                <div class="text-xs text-gray-500 text-center">😠</div>
+            </div>
+
+            <!-- Pose 7: Sleeping (Endormi) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-indigo-400/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 14 L 35 10 L 32 7 L 30 5" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,5 28,3 30,1 32,3" fill="#818CF8"/>
+                        <path d="M 62 14 L 65 10 L 68 7 L 70 5" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,5 68,3 70,1 72,3" fill="#818CF8"/>
+                        <polygon points="50,27 62,33 62,45 50,51 38,45 38,33" fill="#818CF8"/>
+                        <polygon points="50,27 62,33 57,30" fill="#A5B4FC" opacity="0.5"/>
+                        <!-- Yeux fermés (lignes) -->
+                        <line x1="41" y1="35" x2="48" y2="35" stroke="#09090B" stroke-width="2.5" stroke-linecap="round"/>
+                        <line x1="52" y1="35" x2="59" y2="35" stroke="#09090B" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Zzz -->
+                        <text x="68" y="20" fill="#818CF8" font-size="8" opacity="0.8">Z</text>
+                        <text x="73" y="16" fill="#818CF8" font-size="6" opacity="0.6">z</text>
+                        <text x="77" y="13" fill="#818CF8" font-size="5" opacity="0.4">z</text>
+                        <polygon points="33,47 36,49 36,54 33,56 30,54 30,49" fill="#818CF8" opacity="0.9"/>
+                        <polygon points="67,47 70,49 70,54 67,56 64,54 64,49" fill="#818CF8" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Sleeping</div>
+                <div class="text-xs text-gray-500 text-center">😴</div>
+            </div>
+
+            <!-- Pose 8: Working (Concentré) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#06B6D4"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#06B6D4"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#06B6D4"/>
+                        <polygon points="50,25 62,31 57,28" fill="#67E8F9" opacity="0.5"/>
+                        <!-- Yeux concentrés (carrés petits) -->
+                        <rect x="42" y="34" width="6" height="4" rx="1" fill="#09090B"/>
+                        <rect x="52" y="34" width="6" height="4" rx="1" fill="#09090B"/>
+                        <!-- Points focus -->
+                        <circle cx="44" cy="35.5" r="1" fill="#67E8F9"/>
+                        <circle cx="54" cy="35.5" r="1" fill="#67E8F9"/>
+                        <!-- Lignes de code/données -->
+                        <line x1="40" y1="41" x2="46" y2="41" stroke="#09090B" stroke-width="1" opacity="0.6"/>
+                        <line x1="54" y1="41" x2="60" y2="41" stroke="#09090B" stroke-width="1" opacity="0.6"/>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#06B6D4" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#06B6D4" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Working</div>
+                <div class="text-xs text-gray-500 text-center">⚡</div>
+            </div>
+
+            <!-- Pose 9: Confused (Confus) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-orange-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 13 L 35 9 L 32 6 L 30 4" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,4 28,2 30,0 32,2" fill="#FB923C"/>
+                        <path d="M 62 13 L 65 9 L 68 6 L 70 4" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,4 68,2 70,0 72,2" fill="#FB923C"/>
+                        <!-- Tête penchée -->
+                        <g transform="rotate(-12 50 37)">
+                            <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#FB923C"/>
+                            <polygon points="50,25 62,31 57,28" fill="#FDBA74" opacity="0.5"/>
+                            <!-- Un œil plus haut que l'autre -->
+                            <rect x="42" y="31" width="5" height="5" rx="1" fill="#09090B"/>
+                            <rect x="53" y="35" width="5" height="5" rx="1" fill="#09090B"/>
+                        </g>
+                        <!-- Point d'interrogation -->
+                        <text x="68" y="22" fill="#FB923C" font-size="12" font-weight="bold">?</text>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#FB923C" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#FB923C" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Confused</div>
+                <div class="text-xs text-gray-500 text-center">🤨</div>
+            </div>
+
+            <!-- Pose 10: Love (Amour) -->
+            <div class="demo-card p-4 rounded-xl border border-white/5 hover:border-pink-500/30 transition-all">
+                <div class="h-48 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-3">
+                    <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#EC4899"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#EC4899"/>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#EC4899"/>
+                        <polygon points="50,25 62,31 57,28" fill="#F9A8D4" opacity="0.5"/>
+                        <!-- Yeux cœurs ❤️ -->
+                        <path d="M 42 33 L 44 31 L 46 33 L 46 36 L 44 38 L 42 36 Z" fill="#EF4444"/>
+                        <path d="M 54 33 L 56 31 L 58 33 L 58 36 L 56 38 L 54 36 Z" fill="#EF4444"/>
+                        <!-- Grand sourire -->
+                        <path d="M 42 40 Q 50 45 58 40" stroke="#09090B" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <!-- Cœurs flottants -->
+                        <path d="M 22 40 L 23 38 L 24 40 L 24 42 L 23 44 L 22 42 Z" fill="#EF4444" opacity="0.6"/>
+                        <path d="M 76 42 L 77 40 L 78 42 L 78 44 L 77 46 L 76 44 Z" fill="#EF4444" opacity="0.6"/>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#EC4899" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#EC4899" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-sm font-bold mb-1 text-center">Love</div>
+                <div class="text-xs text-gray-500 text-center">😍</div>
+            </div>
+
+        </div>
+
+        <!-- Animations Section -->
+        <h2 class="text-4xl font-bold mb-8">Animations Continues (6)</h2>
+        <p class="text-gray-400 mb-12">Boucles infinies pour différents états</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Animation 1: Idle Levitation -->
+            <div class="demo-card p-6 rounded-xl border border-white/5">
+                <div class="h-64 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-4">
+                    <svg class="poly-anim-idle" width="180" height="180" viewBox="0 0 100 100" fill="none">
+                        <g class="antenna">
+                            <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <polygon points="30,3 28,1 30,-1 32,1" fill="#3B82F6"/>
+                        </g>
+                        <g class="antenna">
+                            <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <polygon points="70,3 68,1 70,-1 72,1" fill="#3B82F6"/>
+                        </g>
+                        <g class="core">
+                            <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#3B82F6"/>
+                            <polygon points="50,25 62,31 57,28" fill="#60A5FA" opacity="0.5"/>
+                            <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                        </g>
+                        <g class="tentacle">
+                            <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#3B82F6" opacity="0.9"/>
+                        </g>
+                        <g class="tentacle">
+                            <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#3B82F6" opacity="0.9"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg font-bold mb-2">Idle Levitation</div>
+                    <div class="text-sm text-gray-400 mb-3">Flottement au repos</div>
+                    <div class="text-xs text-gray-500">4s cycle • ease-in-out</div>
+                </div>
+            </div>
+
+            <!-- Animation 2: Excited Jump -->
+            <div class="demo-card p-6 rounded-xl border border-white/5">
+                <div class="h-64 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-4">
+                    <svg class="poly-anim-excited" width="180" height="180" viewBox="0 0 100 100" fill="none">
+                        <g class="antenna">
+                            <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <polygon points="30,3 28,1 30,-1 32,1" fill="#F59E0B"/>
+                        </g>
+                        <g class="antenna">
+                            <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <polygon points="70,3 68,1 70,-1 72,1" fill="#F59E0B"/>
+                        </g>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#F59E0B"/>
+                        <polygon points="50,25 62,31 57,28" fill="#FCD34D" opacity="0.5"/>
+                        <polygon points="44.5,35 45,33 45.5,35 47.5,35 46,36.5 46.5,38.5 44.5,37 42.5,38.5 43,36.5 41.5,35" fill="#FCD34D"/>
+                        <polygon points="55.5,35 56,33 56.5,35 58.5,35 57,36.5 57.5,38.5 55.5,37 53.5,38.5 54,36.5 52.5,35" fill="#FCD34D"/>
+                        <g class="tentacle">
+                            <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#F59E0B" opacity="0.9"/>
+                        </g>
+                        <g class="tentacle">
+                            <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#F59E0B" opacity="0.9"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg font-bold mb-2">Excited Jump</div>
+                    <div class="text-sm text-gray-400 mb-3">Saut de joie</div>
+                    <div class="text-xs text-gray-500">0.8s cycle • bounce</div>
+                </div>
+            </div>
+
+            <!-- Animation 3: Thinking -->
+            <div class="demo-card p-6 rounded-xl border border-white/5">
+                <div class="h-64 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-4">
+                    <svg class="poly-anim-thinking" width="180" height="180" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#8B5CF6"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#8B5CF6"/>
+                        <g class="core">
+                            <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#8B5CF6"/>
+                            <polygon points="50,25 62,31 57,28" fill="#A78BFA" opacity="0.5"/>
+                            <polygon class="pupil" points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                        </g>
+                        <circle cx="70" cy="20" r="4" fill="#8B5CF6" opacity="0.3"/>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#8B5CF6" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#8B5CF6" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg font-bold mb-2">Thinking</div>
+                    <div class="text-sm text-gray-400 mb-3">Réflexion</div>
+                    <div class="text-xs text-gray-500">2s cycle • tilt</div>
+                </div>
+            </div>
+
+            <!-- Animation 4: Scanning -->
+            <div class="demo-card p-6 rounded-xl border border-white/5">
+                <div class="h-64 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-4">
+                    <svg class="poly-anim-scan" width="180" height="180" viewBox="0 0 100 100" fill="none">
+                        <g class="antenna">
+                            <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <polygon points="30,3 28,1 30,-1 32,1" fill="#06B6D4"/>
+                        </g>
+                        <g class="antenna">
+                            <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            <polygon points="70,3 68,1 70,-1 72,1" fill="#06B6D4"/>
+                        </g>
+                        <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#06B6D4"/>
+                        <polygon points="50,25 62,31 57,28" fill="#67E8F9" opacity="0.5"/>
+                        <g class="pupil">
+                            <polygon points="50,37 52.5,39 50,41 47.5,39" fill="#09090B"/>
+                        </g>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#06B6D4" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#06B6D4" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg font-bold mb-2">Scanning</div>
+                    <div class="text-sm text-gray-400 mb-3">Analyse active</div>
+                    <div class="text-xs text-gray-500">2s cycle • left-right</div>
+                </div>
+            </div>
+
+            <!-- Animation 5: Sleeping -->
+            <div class="demo-card p-6 rounded-xl border border-white/5">
+                <div class="h-64 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-4">
+                    <svg class="poly-anim-sleep" width="180" height="180" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 14 L 35 10 L 32 7 L 30 5" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,5 28,3 30,1 32,3" fill="#818CF8"/>
+                        <path d="M 62 14 L 65 10 L 68 7 L 70 5" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,5 68,3 70,1 72,3" fill="#818CF8"/>
+                        <g class="core">
+                            <polygon points="50,27 62,33 62,45 50,51 38,45 38,33" fill="#818CF8"/>
+                            <polygon points="50,27 62,33 57,30" fill="#A5B4FC" opacity="0.5"/>
+                            <line x1="41" y1="37" x2="48" y2="37" stroke="#09090B" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="52" y1="37" x2="59" y2="37" stroke="#09090B" stroke-width="2.5" stroke-linecap="round"/>
+                        </g>
+                        <g class="zzz">
+                            <text x="68" y="20" fill="#818CF8" font-size="8">Z</text>
+                            <text x="73" y="16" fill="#818CF8" font-size="6">z</text>
+                            <text x="77" y="13" fill="#818CF8" font-size="5">z</text>
+                        </g>
+                        <polygon points="33,47 36,49 36,54 33,56 30,54 30,49" fill="#818CF8" opacity="0.9"/>
+                        <polygon points="67,47 70,49 70,54 67,56 64,54 64,49" fill="#818CF8" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg font-bold mb-2">Sleeping</div>
+                    <div class="text-sm text-gray-400 mb-3">Sommeil paisible</div>
+                    <div class="text-xs text-gray-500">3s cycle • breathe</div>
+                </div>
+            </div>
+
+            <!-- Animation 6: Working -->
+            <div class="demo-card p-6 rounded-xl border border-white/5">
+                <div class="h-64 flex items-center justify-center bg-genesis-obsidian rounded-lg mb-4">
+                    <svg class="poly-anim-work" width="180" height="180" viewBox="0 0 100 100" fill="none">
+                        <path d="M 38 12 L 35 8 L 32 5 L 30 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="30,3 28,1 30,-1 32,1" fill="#06B6D4"/>
+                        <path d="M 62 12 L 65 8 L 68 5 L 70 3" stroke="#E4E4E7" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <polygon points="70,3 68,1 70,-1 72,1" fill="#06B6D4"/>
+                        <g class="core">
+                            <polygon points="50,25 62,31 62,43 50,49 38,43 38,31" fill="#06B6D4"/>
+                            <polygon points="50,25 62,31 57,28" fill="#67E8F9" opacity="0.5"/>
+                            <rect x="42" y="34" width="6" height="4" rx="1" fill="#09090B" class="pupil"/>
+                            <rect x="52" y="34" width="6" height="4" rx="1" fill="#09090B" class="pupil"/>
+                        </g>
+                        <polygon points="33,45 36,47 36,52 33,54 30,52 30,47" fill="#06B6D4" opacity="0.9"/>
+                        <polygon points="67,45 70,47 70,52 67,54 64,52 64,47" fill="#06B6D4" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg font-bold mb-2">Working</div>
+                    <div class="text-sm text-gray-400 mb-3">Traitement actif</div>
+                    <div class="text-xs text-gray-500">1s cycle • pulse</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer CTA -->
+        <div class="mt-20 text-center demo-card p-12 rounded-3xl border-2 border-genesis-amber/30">
+            <div class="inline-block px-6 py-3 bg-genesis-amber/20 rounded-full text-genesis-amber text-sm font-bold mb-6 tracking-wider">
+                CHARACTER SYSTEM COMPLET
+            </div>
+            <h2 class="text-4xl font-bold mb-4">Poly Guardian — Expressif & Vivant</h2>
+            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                10 poses émotionnelles + 6 animations continues = Mascotte complète et polyvalente
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center text-sm">
+                <div class="px-4 py-2 bg-white/5 rounded-lg">✅ 10 Émotions</div>
+                <div class="px-4 py-2 bg-white/5 rounded-lg">✅ 6 Animations</div>
+                <div class="px-4 py-2 bg-white/5 rounded-lg">✅ Style Géométrique</div>
+                <div class="px-4 py-2 bg-white/5 rounded-lg">✅ Cohérence Brand</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

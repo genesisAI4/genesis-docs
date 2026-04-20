@@ -1,0 +1,17 @@
+/**
+ * GENESIS DESIGN SYSTEM — Main Entry Point
+ *
+ * Quick import: include this single file to get everything
+ *   <link rel="stylesheet" href="genesis-design-system/genesis-design.css">
+ *
+ * Or import individually:
+ *   <link rel="stylesheet" href="genesis-design-system/tokens.css">
+ *   <link rel="stylesheet" href="genesis-design-system/components.css">
+ *   <link rel="stylesheet" href="genesis-design-system/branding.css">
+ *
+ * Version: 1.0.0
+ */
+
+@import url('tokens.css');
+@import url('components.css');
+@import url('branding.css');
