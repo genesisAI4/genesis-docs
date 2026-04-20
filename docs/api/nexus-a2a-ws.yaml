@@ -1,0 +1,472 @@
+asyncapi: 2.6.0
+
+info:
+  title: Genesis Nexus — A2A WebSocket Protocol
+  version: 1.0.0
+  description: |
+    Contrat **AsyncAPI 2.6** pour le canal WebSocket A2A (Agent-to-Agent) entre
+    le Nexus local et ses tentacules (Mobile, Desktop, Extension, Igon-7, Clisis).
+
+    - Transport : WebSocket sur TLS 1.3
+    - Signature : HMAC-SHA256 (`signature`) sur le champ `payload` sérialisé JSON
+    - Auth : `AUTH` initial avec JWT — `AUTH_MAX_ATTEMPTS = 3`
+    - Limite de taille : `MAX_MESSAGE_SIZE = 64 KB` par frame
+    - Heartbeat : 30 s (serveur → client, type `PING` → client répond `PONG`)
+    - Reconnect storm : cooldown 500 ms par IP
+
+    Complémentaire du contrat REST documenté dans
+    [`nexus-rest.yaml`](./nexus-rest.yaml) et du spec détaillé
+    `src/protocols/A2A_PROTOCOL_SPEC.md` du repo `genesis-nexus`.
+
+  license:
+    name: BSL 1.1
+
+servers:
+  local:
+    url: ws://localhost:8080
+    protocol: ws
+    description: Nexus local — endpoint `/ws`
+  aion-desktop:
+    url: ws://localhost:8080
+    protocol: ws
+    description: |
+      Endpoint canonique pour Aion Desktop : `/aion-desktop`
+      (alias legacy `/clawx` toujours accepté en 1.x pour transition).
+
+defaultContentType: application/json
+
+channels:
+  /ws:
+    description: Canal principal — tentacles génériques + agents externes
+    bindings:
+      ws:
+        method: GET
+    subscribe:
+      operationId: clientPublish
+      summary: Messages émis par le client
+      message:
+        oneOf:
+          - $ref: "#/components/messages/Auth"
+          - $ref: "#/components/messages/UserMessage"
+          - $ref: "#/components/messages/AgentCreate"
+          - $ref: "#/components/messages/WorkflowRun"
+          - $ref: "#/components/messages/VaultStore"
+          - $ref: "#/components/messages/Subscribe"
+          - $ref: "#/components/messages/Ping"
+          - $ref: "#/components/messages/RpcCall"
+    publish:
+      operationId: serverPublish
+      summary: Messages émis par le serveur
+      message:
+        oneOf:
+          - $ref: "#/components/messages/Welcome"
+          - $ref: "#/components/messages/AuthSuccess"
+          - $ref: "#/components/messages/AuthFailure"
+          - $ref: "#/components/messages/AgentCreated"
+          - $ref: "#/components/messages/WorkflowCompleted"
+          - $ref: "#/components/messages/VaultStored"
+          - $ref: "#/components/messages/Subscribed"
+          - $ref: "#/components/messages/Pong"
+          - $ref: "#/components/messages/RpcResponse"
+          - $ref: "#/components/messages/CognitiveResponse"
+          - $ref: "#/components/messages/StateUpdate"
+          - $ref: "#/components/messages/Error"
+
+  /aion-desktop:
+    description: |
+      Canal dédié à Aion Desktop. Mêmes messages que `/ws` mais priorité élevée
+      et canal de notifications UI (e.g. `gateway.status_changed`).
+      Alias legacy `/clawx` (accepté en 1.x, supprimé en 2.0).
+    bindings:
+      ws:
+        method: GET
+    subscribe:
+      operationId: desktopPublish
+      message:
+        oneOf:
+          - $ref: "#/components/messages/Auth"
+          - $ref: "#/components/messages/RpcCall"
+          - $ref: "#/components/messages/Ping"
+    publish:
+      operationId: desktopReceive
+      message:
+        oneOf:
+          - $ref: "#/components/messages/Welcome"
+          - $ref: "#/components/messages/Notification"
+          - $ref: "#/components/messages/RpcResponse"
+          - $ref: "#/components/messages/Pong"
+          - $ref: "#/components/messages/Error"
+
+components:
+  securitySchemes:
+    jwt:
+      type: userPassword
+      description: JWT envoyé dans le premier message `AUTH`
+    hmac:
+      type: symmetricEncryption
+      description: |
+        Signature HMAC-SHA256 obligatoire sur toutes les frames hors `PING`
+        et `AUTH`. Clé partagée `WS_HMAC_SECRET`.
+
+  messageTraits:
+    signed:
+      headers:
+        type: object
+        required: [signature]
+        properties:
+          signature:
+            type: string
+            description: HMAC-SHA256 base64 du payload JSON canonical
+    correlatable:
+      headers:
+        type: object
+        properties:
+          correlationId:
+            type: string
+            format: uuid
+
+  messages:
+    # ──────────────────────────────────────────────────────────────
+    # Client → Server
+    # ──────────────────────────────────────────────────────────────
+    Auth:
+      name: AUTH
+      messageId: auth
+      summary: Authentification JWT
+      payload:
+        type: object
+        required: [type, token]
+        properties:
+          type: { const: AUTH }
+          token: { type: string, description: "JWT signé par Nexus" }
+
+    UserMessage:
+      name: USER_MESSAGE
+      messageId: user-message
+      summary: Message utilisateur (chat / cognitive)
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, payload]
+        properties:
+          type: { const: USER_MESSAGE }
+          payload:
+            type: object
+            required: [text]
+            properties:
+              text: { type: string, maxLength: 16000 }
+              mode:
+                type: string
+                enum: [focus, explore, rest, creative, critique]
+
+    AgentCreate:
+      name: AGENT_CREATE
+      messageId: agent-create
+      summary: Demande de création d'un agent
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, payload]
+        properties:
+          type: { const: AGENT_CREATE }
+          payload:
+            type: object
+            required: [skillId]
+            properties:
+              skillId: { type: string }
+              params:
+                type: object
+                additionalProperties: true
+
+    WorkflowRun:
+      name: WORKFLOW_RUN
+      messageId: workflow-run
+      summary: Déclencher un workflow Igon-7
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, payload]
+        properties:
+          type: { const: WORKFLOW_RUN }
+          payload:
+            type: object
+            required: [workflowId]
+            properties:
+              workflowId: { type: string }
+              input:
+                type: object
+                additionalProperties: true
+
+    VaultStore:
+      name: VAULT_STORE
+      messageId: vault-store
+      summary: Stocker une secret (vault doit être unlock)
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, payload]
+        properties:
+          type: { const: VAULT_STORE }
+          payload:
+            type: object
+            required: [key, value]
+            properties:
+              key: { type: string }
+              value: { type: string }
+
+    Subscribe:
+      name: SUBSCRIBE
+      messageId: subscribe
+      summary: S'abonner aux mises à jour d'état du Nexus
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, payload]
+        properties:
+          type: { const: SUBSCRIBE }
+          payload:
+            type: object
+            properties:
+              topic:
+                type: string
+                enum: [state, agents, skills, metrics, events, all]
+
+    Ping:
+      name: PING
+      messageId: ping
+      summary: Heartbeat client → serveur
+      payload:
+        type: object
+        required: [type]
+        properties:
+          type: { const: PING }
+          t: { type: integer, description: "Unix ms" }
+
+    RpcCall:
+      name: RPC_CALL
+      messageId: rpc-call
+      summary: Appel RPC méthode → Nexus
+      traits:
+        - { $ref: "#/components/messageTraits/signed" }
+        - { $ref: "#/components/messageTraits/correlatable" }
+      payload:
+        type: object
+        required: [type, method]
+        properties:
+          type: { const: RPC_CALL }
+          method:
+            type: string
+            enum:
+              - aionstore.list
+              - memory.sessions
+              - guardian.approvals
+              - guardian.stats
+              - devices.list
+              - workflows.list
+          params:
+            type: object
+            additionalProperties: true
+
+    # ──────────────────────────────────────────────────────────────
+    # Server → Client
+    # ──────────────────────────────────────────────────────────────
+    Welcome:
+      name: WELCOME
+      messageId: welcome
+      summary: Envoyé à la connexion avec le clientId + protocolVersion
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, clientId, protocolVersion]
+        properties:
+          type: { const: WELCOME }
+          clientId: { type: string, format: uuid }
+          protocolVersion: { type: string, example: "1.0.0" }
+          heartbeatInterval: { type: integer, default: 30000 }
+
+    AuthSuccess:
+      name: AUTH_SUCCESS
+      messageId: auth-success
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, userId, expiresAt]
+        properties:
+          type: { const: AUTH_SUCCESS }
+          userId: { type: string }
+          expiresAt: { type: integer, description: "Unix ms" }
+
+    AuthFailure:
+      name: AUTH_FAILURE
+      messageId: auth-failure
+      payload:
+        type: object
+        required: [type, reason]
+        properties:
+          type: { const: AUTH_FAILURE }
+          reason: { type: string }
+          attemptsLeft: { type: integer }
+
+    AgentCreated:
+      name: AGENT_CREATED
+      messageId: agent-created
+      traits:
+        - { $ref: "#/components/messageTraits/signed" }
+        - { $ref: "#/components/messageTraits/correlatable" }
+      payload:
+        type: object
+        required: [type, agentId]
+        properties:
+          type: { const: AGENT_CREATED }
+          agentId: { type: string, format: uuid }
+
+    WorkflowCompleted:
+      name: WORKFLOW_COMPLETED
+      messageId: workflow-completed
+      traits:
+        - { $ref: "#/components/messageTraits/signed" }
+        - { $ref: "#/components/messageTraits/correlatable" }
+      payload:
+        type: object
+        required: [type, workflowId, status]
+        properties:
+          type: { const: WORKFLOW_COMPLETED }
+          workflowId: { type: string }
+          status:
+            type: string
+            enum: [completed, failed, cancelled]
+          result:
+            type: object
+            additionalProperties: true
+
+    VaultStored:
+      name: VAULT_STORED
+      messageId: vault-stored
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, key]
+        properties:
+          type: { const: VAULT_STORED }
+          key: { type: string }
+
+    Subscribed:
+      name: SUBSCRIBED
+      messageId: subscribed
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, topic]
+        properties:
+          type: { const: SUBSCRIBED }
+          topic: { type: string }
+
+    Pong:
+      name: PONG
+      messageId: pong
+      payload:
+        type: object
+        required: [type]
+        properties:
+          type: { const: PONG }
+          t: { type: integer }
+
+    RpcResponse:
+      name: RPC_RESPONSE
+      messageId: rpc-response
+      traits:
+        - { $ref: "#/components/messageTraits/signed" }
+        - { $ref: "#/components/messageTraits/correlatable" }
+      payload:
+        type: object
+        required: [type]
+        properties:
+          type: { const: RPC_RESPONSE }
+          result:
+            type: object
+            additionalProperties: true
+          error:
+            $ref: "#/components/schemas/A2AError"
+
+    CognitiveResponse:
+      name: COGNITIVE_RESPONSE
+      messageId: cognitive-response
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, answer]
+        properties:
+          type: { const: COGNITIVE_RESPONSE }
+          answer: { type: string }
+          suggestions:
+            type: array
+            items: { type: string }
+
+    StateUpdate:
+      name: STATE_UPDATE
+      messageId: state-update
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, topic, data]
+        properties:
+          type: { const: STATE_UPDATE }
+          topic:
+            type: string
+            enum: [state, agents, skills, metrics, events]
+          data:
+            type: object
+            additionalProperties: true
+
+    Notification:
+      name: NOTIFICATION
+      messageId: notification
+      summary: Notification poussée (usage principal Desktop/Extension)
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
+      payload:
+        type: object
+        required: [type, topic]
+        properties:
+          type: { const: NOTIFICATION }
+          topic:
+            type: string
+            description: "e.g. gateway.status_changed, guardian.action_pending"
+          data:
+            type: object
+            additionalProperties: true
+
+    Error:
+      name: ERROR
+      messageId: error
+      payload:
+        type: object
+        required: [type, code, message]
+        properties:
+          type: { const: ERROR }
+          code:
+            type: string
+            enum:
+              - AUTH_REQUIRED
+              - AUTH_FAILED
+              - AUTH_MAX_ATTEMPTS
+              - SIGNATURE_INVALID
+              - RATE_LIMITED
+              - MESSAGE_TOO_LARGE
+              - UNKNOWN_TYPE
+              - VAULT_LOCKED
+              - INTERNAL_ERROR
+          message: { type: string }
+          retryAfter: { type: integer, description: "Secondes avant de retenter" }
+
+  schemas:
+    A2AError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details:
+          type: object
+          additionalProperties: true
+        retryable: { type: boolean }
+        timestamp: { type: integer }

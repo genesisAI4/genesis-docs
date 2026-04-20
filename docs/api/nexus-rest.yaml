@@ -1,0 +1,605 @@
+openapi: 3.1.0
+
+info:
+  title: Genesis Nexus — REST API
+  version: 1.0.0
+  summary: Source unique de vérité pour l'API REST d'un Nexus local.
+  description: |
+    Spécification canonique de l'API REST exposée par **genesis-nexus**
+    (cerveau local de l'utilisateur). Tous les organes (Mobile, Desktop,
+    Extension, Cloud-API relay, agents externes) consomment ce contrat.
+
+    Complémentaire du contrat WebSocket/A2A, documenté dans
+    [`nexus-a2a-ws.yaml`](./nexus-a2a-ws.yaml).
+
+    ## Modèle de sécurité
+
+    - Auth sessions UI → JWT `Authorization: Bearer <token>` (rotation 30 j).
+    - Endpoints mobiles → JWT relayé par Cloud-API (jamais lu en clair par le relay).
+    - Endpoint Extension → JWT pairé (`/api/pair`) avec scope limité.
+    - Tous les endpoints `/api/vault/*` exigent que le vault soit unlock.
+
+    ## Tier de licence
+
+    Ce contrat est publié sous **licence BSL 1.1** (même tier que le repo
+    `genesis-nexus`). Cf. `LICENSE.md` du repo parent.
+
+  contact:
+    name: Genesis Technologies SAS
+    email: contact@genesisai.io
+
+  license:
+    name: BSL 1.1
+    url: https://mariadb.com/bsl-faq-mariadb/
+
+servers:
+  - url: http://localhost:8080
+    description: Local développement (Nexus en écoute par défaut)
+  - url: http://nexus:8080
+    description: Réseau docker-compose interne (résolution via DNS du bridge)
+
+tags:
+  - name: health
+    description: Liveness / readiness
+  - name: vault
+    description: Gestion du coffre-fort chiffré (AES-256-GCM + passphrase)
+  - name: nexus
+    description: État du cerveau, agents, skills, métriques
+  - name: cognitive
+    description: Mode cognitif + coaching
+  - name: events
+    description: Stats + snapshots d'événements
+  - name: skills
+    description: Hot-reload + introspection des skills
+  - name: extension
+    description: Interactions navigateur via l'extension
+  - name: mobile
+    description: Guardian HITL depuis le mobile (via Cloud-API)
+  - name: marketplace
+    description: Publication de skills
+  - name: pairing
+    description: Pairing initial d'un client
+
+security:
+  - bearerAuth: []
+
+paths:
+  # ──────────────────────────────────────────────────────────────────
+  # Health
+  # ──────────────────────────────────────────────────────────────────
+  /health:
+    get:
+      tags: [health]
+      summary: Liveness probe
+      security: []
+      responses:
+        "200":
+          description: Nexus vivant
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HealthStatus" }
+
+  /api/stats:
+    get:
+      tags: [health]
+      summary: Statistiques globales (uptime, version, mémoire)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NexusStats" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Pairing
+  # ──────────────────────────────────────────────────────────────────
+  /api/pair:
+    get:
+      tags: [pairing]
+      summary: Générer un code de pairing pour un nouveau client
+      security: []
+      responses:
+        "200":
+          description: Code à saisir côté client pour obtenir un JWT scoped
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PairingCode" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Vault
+  # ──────────────────────────────────────────────────────────────────
+  /api/vault/unlock:
+    post:
+      tags: [vault]
+      summary: Déverrouiller le vault avec une passphrase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VaultUnlockRequest" }
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/vault/lock:
+    post:
+      tags: [vault]
+      summary: Verrouiller le vault (efface la master key mémoire)
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+
+  /api/vault/store:
+    post:
+      tags: [vault]
+      summary: Stocker une secret dans le vault
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VaultStoreRequest" }
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+        "423":
+          description: Vault locked
+
+  # ──────────────────────────────────────────────────────────────────
+  # Nexus — état cerveau
+  # ──────────────────────────────────────────────────────────────────
+  /api/nexus/state:
+    get:
+      tags: [nexus]
+      summary: Snapshot complet de l'état (agents, skills, tentacles)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NexusState" }
+
+  /api/nexus/tentacles:
+    get:
+      tags: [nexus]
+      summary: Tentacles connectées (Mobile, Desktop, Extension)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Tentacle" }
+
+  /api/nexus/skills:
+    get:
+      tags: [nexus]
+      summary: Liste des skills chargées
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Skill" }
+
+  /api/nexus/metrics:
+    get:
+      tags: [nexus]
+      summary: Métriques Prometheus-like (counters, gauges)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NexusMetrics" }
+
+  /api/nexus/messages:
+    get:
+      tags: [nexus]
+      summary: Dernier flux de messages (debug)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/A2AEnvelope" }
+
+  /api/nexus/agents:
+    get:
+      tags: [nexus]
+      summary: Liste des agents actifs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Agent" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Cognitive
+  # ──────────────────────────────────────────────────────────────────
+  /api/cognitive/mode:
+    get:
+      tags: [cognitive]
+      summary: Mode cognitif courant (focus, explore, rest, ...)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CognitiveMode" }
+    post:
+      tags: [cognitive]
+      summary: Changer le mode cognitif
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CognitiveMode" }
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+
+  /api/cognitive/help:
+    post:
+      tags: [cognitive]
+      summary: Demander un coaching cognitif sur une tâche
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question]
+              properties:
+                question: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CognitiveResponse" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Events
+  # ──────────────────────────────────────────────────────────────────
+  /api/events/stats:
+    get:
+      tags: [events]
+      summary: Compteurs d'événements par type
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EventStats" }
+
+  /api/events/snapshot:
+    post:
+      tags: [events]
+      summary: Prendre un snapshot d'événements (debug / export)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EventSnapshot" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Skills
+  # ──────────────────────────────────────────────────────────────────
+  /api/skills/hot-reload:
+    post:
+      tags: [skills]
+      summary: Recharger les skills à chaud depuis le disque
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reloaded: { type: integer }
+                  failed: { type: integer }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Extension (browser)
+  # ──────────────────────────────────────────────────────────────────
+  /api/extension/context:
+    post:
+      tags: [extension]
+      summary: Recevoir le contexte courant d'un onglet navigateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ExtensionContext" }
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Mobile — Guardian HITL
+  # ──────────────────────────────────────────────────────────────────
+  /api/mobile/pending-actions:
+    get:
+      tags: [mobile]
+      summary: Actions en attente d'approbation biométrique Guardian
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/GuardianAction" }
+
+  /api/mobile/approve:
+    post:
+      tags: [mobile]
+      summary: Approuver ou refuser une action Guardian en attente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GuardianDecision" }
+      responses:
+        "200": { $ref: "#/components/responses/Ok" }
+
+  # ──────────────────────────────────────────────────────────────────
+  # Marketplace
+  # ──────────────────────────────────────────────────────────────────
+  /api/marketplace/publish:
+    post:
+      tags: [marketplace]
+      summary: Publier une skill vers le marketplace Genesis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/MarketplacePublish" }
+      responses:
+        "202":
+          description: Accepté, publication en cours
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    Ok:
+      description: Succès
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok: { type: boolean, enum: [true] }
+    Unauthorized:
+      description: Non authentifié ou token invalide
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/A2AError" }
+
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status, uptime]
+      properties:
+        status: { type: string, enum: [healthy, degraded, unhealthy] }
+        uptime: { type: number, description: "Secondes depuis le démarrage" }
+        version: { type: string }
+
+    NexusStats:
+      type: object
+      properties:
+        uptime: { type: number }
+        version: { type: string }
+        agents: { type: integer }
+        skills: { type: integer }
+        memoryMB: { type: number }
+
+    PairingCode:
+      type: object
+      properties:
+        code: { type: string, minLength: 6, maxLength: 8 }
+        expiresIn: { type: integer, description: "Secondes" }
+
+    VaultUnlockRequest:
+      type: object
+      required: [passphrase]
+      properties:
+        passphrase:
+          type: string
+          format: password
+
+    VaultStoreRequest:
+      type: object
+      required: [key, value]
+      properties:
+        key: { type: string }
+        value: { type: string }
+
+    NexusState:
+      type: object
+      properties:
+        agents:
+          type: array
+          items: { $ref: "#/components/schemas/Agent" }
+        skills:
+          type: array
+          items: { $ref: "#/components/schemas/Skill" }
+        tentacles:
+          type: array
+          items: { $ref: "#/components/schemas/Tentacle" }
+
+    Agent:
+      type: object
+      required: [id, type, version]
+      properties:
+        id: { type: string, format: uuid }
+        type:
+          type: string
+          enum: [nexus, igon7, clisis, mobile, desktop, extension, mcp]
+        version: { type: string }
+        capabilities:
+          type: array
+          items: { type: string }
+        endpoint: { type: string, format: uri }
+
+    Tentacle:
+      allOf:
+        - $ref: "#/components/schemas/Agent"
+        - type: object
+          properties:
+            connectedAt: { type: string, format: date-time }
+            lastSeen: { type: string, format: date-time }
+
+    Skill:
+      type: object
+      required: [id, name, version]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        version: { type: string }
+        description: { type: string }
+        enabled: { type: boolean }
+
+    NexusMetrics:
+      type: object
+      additionalProperties:
+        type: number
+
+    A2AEnvelope:
+      description: Message A2A complet — référence, voir nexus-a2a-ws.yaml
+      type: object
+      required: [id, type, from, to, timestamp, signature, payload]
+      properties:
+        id: { type: string, format: uuid }
+        type:
+          type: string
+          enum: [command, query, event, response, ack, error]
+        version: { type: string, example: "1.0.0" }
+        timestamp: { type: integer }
+        from: { $ref: "#/components/schemas/Agent" }
+        to: { $ref: "#/components/schemas/Agent" }
+        correlationId: { type: string, format: uuid }
+        action: { type: string }
+        payload:
+          type: object
+          additionalProperties: true
+        result:
+          type: object
+          additionalProperties: true
+        error: { $ref: "#/components/schemas/A2AError" }
+        signature: { type: string, description: "HMAC-SHA256 base64" }
+        priority: { type: string, enum: [low, normal, high, critical] }
+        ttl: { type: integer }
+        requiresAck: { type: boolean }
+
+    A2AError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details:
+          type: object
+          additionalProperties: true
+        retryable: { type: boolean }
+        timestamp: { type: integer }
+
+    CognitiveMode:
+      type: object
+      required: [mode]
+      properties:
+        mode:
+          type: string
+          enum: [focus, explore, rest, creative, critique]
+
+    CognitiveResponse:
+      type: object
+      properties:
+        answer: { type: string }
+        suggestions:
+          type: array
+          items: { type: string }
+
+    EventStats:
+      type: object
+      additionalProperties:
+        type: integer
+
+    EventSnapshot:
+      type: object
+      properties:
+        takenAt: { type: string, format: date-time }
+        events:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+
+    ExtensionContext:
+      type: object
+      properties:
+        url: { type: string, format: uri }
+        title: { type: string }
+        selection: { type: string }
+        capturedAt: { type: string, format: date-time }
+
+    GuardianAction:
+      type: object
+      required: [id, agentId, riskScore, description, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        agentId: { type: string }
+        riskScore:
+          type: integer
+          minimum: 0
+          maximum: 10
+        description: { type: string }
+        details:
+          type: object
+          additionalProperties: true
+        createdAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+
+    GuardianDecision:
+      type: object
+      required: [actionId, decision, biometricProof]
+      properties:
+        actionId: { type: string, format: uuid }
+        decision:
+          type: string
+          enum: [approve, reject]
+        biometricProof:
+          type: string
+          description: "Jeton court opaque émis par le secure enclave mobile"
+        reason: { type: string }
+
+    MarketplacePublish:
+      type: object
+      required: [skillId, license, tier]
+      properties:
+        skillId: { type: string }
+        license:
+          type: string
+          enum: [MIT, Apache-2.0, AGPL-3.0, BSL-1.1, GPL-3.0, Proprietary]
+        tier:
+          type: string
+          enum: [T1, T2, T3, T4, T5]
+        pricing:
+          type: object
+          properties:
+            model:
+              type: string
+              enum: [free, one-shot, subscription, usage]
+            amount: { type: number }
+            currency: { type: string, default: EUR }
