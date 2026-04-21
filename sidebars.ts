@@ -222,16 +222,6 @@ const sidebars: SidebarsConfig = {
         'advanced/troubleshooting',
       ],
     },
-    {
-      type: 'category',
-      label: 'Contributing',
-      items: [
-        'contributing/development-setup',
-        'contributing/coding-standards',
-        'contributing/testing',
-        'contributing/documentation',
-      ],
-    },
   ],
 };
 

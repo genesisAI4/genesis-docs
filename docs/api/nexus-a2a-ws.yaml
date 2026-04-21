@@ -299,6 +299,7 @@ components:
     AuthFailure:
       name: AUTH_FAILURE
       messageId: auth-failure
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
       payload:
         type: object
         required: [type, reason]
@@ -438,6 +439,7 @@ components:
     Error:
       name: ERROR
       messageId: error
+      traits: [{ $ref: "#/components/messageTraits/signed" }]
       payload:
         type: object
         required: [type, code, message]
