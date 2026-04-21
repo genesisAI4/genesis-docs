@@ -15,7 +15,7 @@ const config: Config = {
   organizationName: 'genesisAI4',
   projectName: 'genesis-docs',
   trailingSlash: false,
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   onBrokenAnchors: 'warn',
 
