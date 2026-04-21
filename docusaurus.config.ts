@@ -65,7 +65,7 @@ const config: Config = {
       {name: 'author', content: 'Genesis AI Team'},
       {property: 'og:site_name', content: 'Genesis AI Documentation'},
       {property: 'og:title', content: 'Genesis AI - Universal Personal AI Assistant'},
-      {property: 'og:description', content: 'Documentation complète de l\\'écosystème Genesis AI - Orchestration distribuée de workflows AI'},
+      {property: 'og:description', content: "Documentation complète de l'écosystème Genesis AI - Orchestration distribuée de workflows AI"},
     ],
     colorMode: {
       defaultMode: 'dark',
